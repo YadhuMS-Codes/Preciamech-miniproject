@@ -586,7 +586,9 @@ footer {
   .hero h1 {
     font-size: 2.5rem;
   }
-  .service-scroll-controls {
+}
+
+.service-scroll-controls {
   display: flex;
   align-items: center;
   width: 100%;
