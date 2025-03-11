@@ -31,5 +31,8 @@ async function addAdmin() {
   }
 }
 
-// Run the function
+// Run the function when this script is executed directly
 addAdmin();
+
+// For browser environments, export the function
+export { addAdmin };
