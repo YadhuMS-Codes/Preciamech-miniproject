@@ -43,7 +43,8 @@ const FAQPage = () => {
       console.log("Fetching FAQs");
       // Get questions that have been answered and marked as published
       const q = query(
-        collection(db, "questions"), 
+        collection(db, "questions"),
+        where("published", "==", true), 
         where("answered", "==", true),
         where("published", "==", true),
         orderBy("createdAt", "desc")
@@ -54,6 +55,7 @@ const FAQPage = () => {
       
       const faqList = querySnapshot.docs.map(doc => {
         const data = doc.data();
+        console.log("FAQ document data:", data);
         return {
           id: doc.id,
           ...data,
@@ -147,11 +149,17 @@ const FAQPage = () => {
     try {
       console.log("Submitting answer for question:", questionId);
       // Update the question with the answer
-      await updateDoc(doc(db, "questions", questionId), {
+      const questionRef = doc(db, "questions", questionId);
+      
+      // Update with explicit fields to ensure proper data structure
+      await updateDoc(questionRef, {
         answer: answerText,
         answered: true,
-        published: true  // Automatically publish the answered question
+        published: true,  // Explicitly publish the answered question
+        updatedAt: serverTimestamp()
       });
+
+      console.log("Answer submitted and question published");
 
       // Reset and refresh
       setAnswerText('');
@@ -161,7 +169,8 @@ const FAQPage = () => {
       setTimeout(() => {
         fetchPendingQuestions();
         fetchFAQs(); // Refresh FAQs to show the newly answered question
-      }, 500);
+        console.log("Refreshed FAQs after answering");
+      }, 1000); // Increased timeout to ensure Firestore updates propagate
     } catch (error) {
       console.error("Error submitting answer:", error);
     }
