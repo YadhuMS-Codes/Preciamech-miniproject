@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+    "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
     "aos": "^2.3.4",
     "firebase": "^11.4.0",
     "i18next": "^24.2.2",
