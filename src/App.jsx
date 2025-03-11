@@ -6,6 +6,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './i18n';
 import './App.css';
+import ImageSlider from './ImageSlider';
 export default function App() {
    const navigate = useNavigate();
   const { t, i18n } = useTranslation();

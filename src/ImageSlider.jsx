@@ -61,3 +61,41 @@ export default function ImageSlider() {
     </div>
   );
 }
+import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+export default function ImageSlider() {
+  // Array of images from the Preciamechpics folder
+  const images = Array.from({ length: 20 }, (_, i) => `/Preciamechpics/${i + 1}.jpg`);
+
+  return (
+    <div className="gallery-container">
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
+        spaceBetween={30}
+        slidesPerView={1}
+        navigation
+        pagination={{ clickable: true }}
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
+      >
+        {images.map((image, index) => (
+          <SwiperSlide key={index}>
+            <img 
+              src={image} 
+              alt={`Gallery image ${index + 1}`}
+              className="gallery-image"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "https://via.placeholder.com/800x400?text=Image+Not+Found";
+              }}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  );
+}
