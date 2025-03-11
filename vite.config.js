@@ -7,6 +7,6 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     allowedHosts:['.replit.dev'],
-    base:'/Mini-projet',
+    base:'/Preciamech-miniproject',
   }
 })

@@ -38,6 +38,7 @@ const FAQPage = () => {
   }, [isAdmin]); // Refresh when admin logs in/out
 
   // Fetch all published FAQs
+ // Fetch all published FAQs
   const fetchFAQs = async () => {
     try {
       console.log("Fetching FAQs");
@@ -46,29 +47,35 @@ const FAQPage = () => {
         collection(db, "questions"),
         where("published", "==", true), 
         where("answered", "==", true),
-        where("published", "==", true),
-        orderBy("createdAt", "desc")
+        //orderBy("createdAt", "desc")
       );
-      
+
       const querySnapshot = await getDocs(q);
       console.log("FAQ docs found:", querySnapshot.docs.length);
-      
+
       const faqList = querySnapshot.docs.map(doc => {
         const data = doc.data();
-        console.log("FAQ document data:", data);
+        console.log("Raw document data:", data);
+
+        // Make sure we're properly accessing the answer field
         return {
           id: doc.id,
-          ...data,
-          date: data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString() : new Date().toLocaleDateString()
+          question: data.question || "No question available",
+          answer: data.answer || "No answer available", // Explicitly map the answer field
+          email: data.email,
+          date: data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString() : new Date().toLocaleDateString(),
+          answered: data.answered,
+          published: data.published
         };
       });
-      
+
       console.log("Processed FAQs:", faqList);
       setFaqs(faqList);
     } catch (error) {
       console.error("Error fetching FAQs:", error);
     }
   };
+  
 
   // Submit question to Firestore
   const handleSubmitQuestion = async (e) => {
