@@ -1,4 +1,3 @@
-
 * {
   margin: 0;
   padding: 0;
@@ -583,7 +582,7 @@ footer {
   .nav-links {
     display: none;
   }
-  
+
   .hero h1 {
     font-size: 2.5rem;
   }
@@ -734,15 +733,41 @@ footer {
   .service-card {
     min-width: 260px;
   }
-  
+
   .project-card {
     min-width: 260px;
   }
-  
+
   .service-scroll-btn, .project-nav {
     width: 36px;
     height: 36px;
     font-size: 16px;
   }
 }
+
+/* Make sure to import AOS styles in your JS file */
+@import 'aos/dist/aos.css';
+
+/* Gallery styles */
+.gallery-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.gallery-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.swiper-button-next, .swiper-button-prev {
+  color: #0097FB !important;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #0097FB !important;
 }

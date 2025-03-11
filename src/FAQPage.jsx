@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './FAQPage.css';
 import { db } from "./firebaseConfig";
-import './firebaseConfig.jsx';
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, getDocs, updateDoc, doc, serverTimestamp, query, orderBy } from "firebase/firestore";
+
 export default function FAQPage() {
   const [question, setQuestion] = useState('');
   const [email, setEmail] = useState('');
@@ -11,6 +12,9 @@ export default function FAQPage() {
   const [adminUsername, setAdminUsername] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
   const [submitMessage, setSubmitMessage] = useState('');
+  const [pendingQuestions, setPendingQuestions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [answerText, setAnswerText] = useState({});
 
   // Complete FAQ list
   const faqs = [
@@ -56,36 +60,71 @@ export default function FAQPage() {
     }
   ];
 
-  // List of pending questions (would be fetched from a database in a real app)
-  const [pendingQuestions, setPendingQuestions] = useState([
-    {
-      id: 101,
-      question: "Do you offer consulting services for startups?",
-      email: "startup@example.com",
-      date: "2025-02-15",
-      answered: false
-    },
-    {
-      id: 102,
-      question: "What's your pricing structure for small businesses?",
-      email: "smallbiz@example.com",
-      date: "2025-02-20",
-      answered: false
-    }
-  ]);
+  // Fetch questions from Firestore
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      setIsLoading(true);
+      try {
+        const q = query(collection(db, "questions"), orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        const questionList = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          date: doc.data().createdAt ? new Date(doc.data().createdAt.toDate()).toLocaleDateString() : new Date().toLocaleDateString()
+        }));
+        setPendingQuestions(questionList);
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+        setSubmitMessage("Error loading questions. Please try again later.");
+        setTimeout(() => setSubmitMessage(""), 5000);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const handleSubmitQuestion = (e) => {
+    fetchQuestions();
+  }, []);
+
+  // Submit question to Firestore
+  const handleSubmitQuestion = async (e) => {
     e.preventDefault();
-    // In a real application, this would send the question to a database
-    setSubmitMessage('Your question has been submitted. We will get back to you shortly.');
-    setQuestion('');
-    setEmail('');
-    setTimeout(() => setSubmitMessage(''), 5000);
+    setIsLoading(true);
+    
+    try {
+      await addDoc(collection(db, "questions"), {
+        question: question,
+        email: email,
+        createdAt: serverTimestamp(),
+        answered: false,
+        answer: ""
+      });
+      
+      setSubmitMessage('Your question has been submitted. We will get back to you shortly.');
+      setQuestion('');
+      setEmail('');
+      
+      // Refresh questions list
+      const q = query(collection(db, "questions"), orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      const questionList = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        date: doc.data().createdAt ? new Date(doc.data().createdAt.toDate()).toLocaleDateString() : new Date().toLocaleDateString()
+      }));
+      setPendingQuestions(questionList);
+    } catch (error) {
+      console.error("Error adding question:", error);
+      setSubmitMessage("Error submitting your question. Please try again later.");
+    } finally {
+      setIsLoading(false);
+      setTimeout(() => setSubmitMessage(''), 5000);
+    }
   };
 
   const handleAdminLogin = (e) => {
     e.preventDefault();
     // In a real application, this would verify credentials against a database
+    // For demo purposes, we're using hardcoded credentials
     if (adminUsername === 'admin' && adminPassword === 'password') {
       setAdminMode(true);
       setSubmitMessage('Admin logged in successfully');
@@ -96,11 +135,40 @@ export default function FAQPage() {
     }
   };
 
-  const handleAnswerQuestion = (id) => {
-    // In a real application, this would update the question status in a database
-    setPendingQuestions(pendingQuestions.map(q => 
-      q.id === id ? {...q, answered: true} : q
-    ));
+  const handleAnswerChange = (id, text) => {
+    setAnswerText({ ...answerText, [id]: text });
+  };
+
+  const handleAnswerQuestion = async (id) => {
+    if (!answerText[id] || answerText[id].trim() === '') {
+      setSubmitMessage('Please provide an answer before submitting');
+      setTimeout(() => setSubmitMessage(''), 3000);
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const questionRef = doc(db, "questions", id);
+      await updateDoc(questionRef, {
+        answered: true,
+        answer: answerText[id],
+        answeredAt: serverTimestamp()
+      });
+
+      // Update the local state
+      setPendingQuestions(prevQuestions => 
+        prevQuestions.map(q => 
+          q.id === id ? {...q, answered: true, answer: answerText[id]} : q
+        )
+      );
+      setSubmitMessage('Answer submitted successfully');
+    } catch (error) {
+      console.error("Error updating question:", error);
+      setSubmitMessage("Error submitting answer. Please try again.");
+    } finally {
+      setIsLoading(false);
+      setTimeout(() => setSubmitMessage(''), 3000);
+    }
   };
 
   return (
@@ -139,14 +207,18 @@ export default function FAQPage() {
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
               required 
+              disabled={isLoading}
             />
             <textarea 
               placeholder="Your Question" 
               value={question} 
               onChange={(e) => setQuestion(e.target.value)} 
               required
+              disabled={isLoading}
             ></textarea>
-            <button type="submit">Submit Question</button>
+            <button type="submit" disabled={isLoading}>
+              {isLoading ? "Submitting..." : "Submit Question"}
+            </button>
           </form>
         </div>
 
@@ -162,6 +234,7 @@ export default function FAQPage() {
                 value={adminUsername} 
                 onChange={(e) => setAdminUsername(e.target.value)} 
                 required 
+                disabled={isLoading}
               />
               <input 
                 type="password" 
@@ -169,35 +242,52 @@ export default function FAQPage() {
                 value={adminPassword} 
                 onChange={(e) => setAdminPassword(e.target.value)} 
                 required 
+                disabled={isLoading}
               />
-              <button type="submit">Login</button>
+              <button type="submit" disabled={isLoading}>Login</button>
             </form>
           </div>
         ) : (
           <div className="admin-panel">
             <h2>Admin Panel</h2>
+            {isLoading && <p>Loading...</p>}
             <div className="pending-questions">
-              <h3>Pending Questions</h3>
+              <h3>User Questions</h3>
               {pendingQuestions.length === 0 ? (
-                <p>No pending questions</p>
+                <p>No questions found</p>
               ) : (
                 pendingQuestions.map((q) => (
                   <div key={q.id} className={`pending-question ${q.answered ? 'answered' : ''}`}>
                     <p><strong>Question:</strong> {q.question}</p>
                     <p><strong>Email:</strong> {q.email}</p>
                     <p><strong>Date:</strong> {q.date}</p>
-                    {!q.answered && (
-                      <div className="admin-actions">
-                        <textarea placeholder="Type your answer here..."></textarea>
-                        <button onClick={() => handleAnswerQuestion(q.id)}>Send Answer</button>
+                    {q.answered && (
+                      <div className="answer-section">
+                        <p><strong>Answer:</strong> {q.answer}</p>
+                        <span className="answered-tag">Answered</span>
                       </div>
                     )}
-                    {q.answered && <span className="answered-tag">Answered</span>}
+                    {!q.answered && (
+                      <div className="admin-actions">
+                        <textarea 
+                          placeholder="Type your answer here..." 
+                          value={answerText[q.id] || ''}
+                          onChange={(e) => handleAnswerChange(q.id, e.target.value)}
+                          disabled={isLoading}
+                        ></textarea>
+                        <button 
+                          onClick={() => handleAnswerQuestion(q.id)}
+                          disabled={isLoading}
+                        >
+                          {isLoading ? "Sending..." : "Send Answer"}
+                        </button>
+                      </div>
+                    )}
                   </div>
                 ))
               )}
             </div>
-            <button onClick={() => setAdminMode(false)}>Logout</button>
+            <button onClick={() => setAdminMode(false)} disabled={isLoading}>Logout</button>
           </div>
         )}
       </div>

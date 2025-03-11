@@ -670,7 +670,7 @@ export default function App() {
             </div>
           </div>
         </section>
-      
+
         <section id="faq" className="faq">
           <h2 data-aos="fade-up">Frequently Asked Questions</h2>
           <div className="faq-grid" data-aos="fade-up" data-aos-delay="100">
@@ -687,7 +687,7 @@ export default function App() {
           >
             View More FAQs
           </button>*/}
-       
+
 
 <button 
   className="view-more-faq" 
@@ -695,6 +695,13 @@ export default function App() {
 >
   View More FAQs
 </button>
+        </section>
+
+        <section id="Gallery">
+          <div>
+            <h2 className="text-center text-2xl font-bold mb-4">Company Gallery</h2>
+            <ImageSlider />
+          </div>
         </section>
 
         <section id="contact" className="contact">
@@ -793,7 +800,7 @@ export default function App() {
         </nav>
       )}
 
-      {renderContent()}
+      {renderContent()}}
 
       {currentPage === 'home' && (
         <footer>
@@ -830,5 +837,3 @@ export default function App() {
     </div>
   );
 }
-  
-  
