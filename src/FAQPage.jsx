@@ -2,8 +2,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './FAQPage.css';
-import { db } from './firebaseConfig';
-import { collection, addDoc, getDocs, query, orderBy, doc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+import { db, authenticateAdmin } from './firebaseConfig';
+import { 
+  collection, 
+  addDoc, 
+  getDocs, 
+  query, 
+  orderBy, 
+  doc, 
+  updateDoc, 
+  deleteDoc, 
+  serverTimestamp,
+  where 
+} from 'firebase/firestore';
 
 const FAQPage = () => {
   const navigate = useNavigate();
@@ -13,29 +24,41 @@ const FAQPage = () => {
   const [submitMessage, setSubmitMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [adminUsername, setAdminUsername] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
   const [pendingQuestions, setPendingQuestions] = useState([]);
   const [answerText, setAnswerText] = useState('');
   const [currentQuestionId, setCurrentQuestionId] = useState(null);
+  const [loginError, setLoginError] = useState('');
 
   // Fetch FAQs on component mount
   useEffect(() => {
-    const fetchFAQs = async () => {
-      try {
-        const q = query(collection(db, "faqs"), orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
-        const faqList = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setFaqs(faqList);
-      } catch (error) {
-        console.error("Error fetching FAQs:", error);
-      }
-    };
-
     fetchFAQs();
   }, []);
+
+  // Fetch all published FAQs
+  const fetchFAQs = async () => {
+    try {
+      // Get questions that have been answered and marked as published
+      const q = query(
+        collection(db, "questions"), 
+        where("answered", "==", true),
+        where("published", "==", true),
+        orderBy("createdAt", "desc")
+      );
+      
+      const querySnapshot = await getDocs(q);
+      const faqList = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        date: doc.data().createdAt ? new Date(doc.data().createdAt.toDate()).toLocaleDateString() : ''
+      }));
+      
+      setFaqs(faqList);
+    } catch (error) {
+      console.error("Error fetching FAQs:", error);
+    }
+  };
 
   // Submit question to Firestore
   const handleSubmitQuestion = async (e) => {
@@ -48,6 +71,7 @@ const FAQPage = () => {
         email: email,
         createdAt: serverTimestamp(),
         answered: false,
+        published: false,
         answer: ""
       });
       
@@ -69,14 +93,22 @@ const FAQPage = () => {
   };
 
   // Admin login
-  const handleAdminLogin = (e) => {
+  const handleAdminLogin = async (e) => {
     e.preventDefault();
-    // Simple password check - in a real app, use secure authentication
-    if (adminPassword === 'admin123') { // This should be replaced with proper authentication
-      setIsAdmin(true);
-      fetchPendingQuestions();
-    } else {
-      alert('Incorrect password');
+    setLoginError('');
+    
+    try {
+      const isAuthenticated = await authenticateAdmin(adminUsername, adminPassword);
+      
+      if (isAuthenticated) {
+        setIsAdmin(true);
+        fetchPendingQuestions();
+      } else {
+        setLoginError('Invalid username or password');
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setLoginError('Authentication failed. Please try again.');
     }
   };
 
@@ -96,23 +128,14 @@ const FAQPage = () => {
     }
   };
 
-  // Submit answer to question and add to FAQs
+  // Submit answer to question
   const handleSubmitAnswer = async (questionId) => {
     try {
       // Update the question with the answer
       await updateDoc(doc(db, "questions", questionId), {
         answer: answerText,
-        answered: true
-      });
-
-      // Get the question data
-      const questionSnapshot = pendingQuestions.find(q => q.id === questionId);
-      
-      // Add to FAQs collection
-      await addDoc(collection(db, "faqs"), {
-        question: questionSnapshot.question,
-        answer: answerText,
-        createdAt: serverTimestamp()
+        answered: true,
+        published: true  // Automatically publish the answered question
       });
 
       // Reset and refresh
@@ -120,16 +143,24 @@ const FAQPage = () => {
       setCurrentQuestionId(null);
       fetchPendingQuestions();
       
-      // Refresh FAQs
-      const q = query(collection(db, "faqs"), orderBy("createdAt", "desc"));
-      const querySnapshot = await getDocs(q);
-      const faqList = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setFaqs(faqList);
+      // Refresh FAQs to show the newly answered question
+      fetchFAQs();
     } catch (error) {
       console.error("Error submitting answer:", error);
+    }
+  };
+
+  // Toggle publish status
+  const togglePublishStatus = async (questionId, currentStatus) => {
+    try {
+      await updateDoc(doc(db, "questions", questionId), {
+        published: !currentStatus
+      });
+      
+      fetchPendingQuestions();
+      fetchFAQs();
+    } catch (error) {
+      console.error("Error toggling publish status:", error);
     }
   };
 
@@ -139,6 +170,7 @@ const FAQPage = () => {
       try {
         await deleteDoc(doc(db, "questions", questionId));
         fetchPendingQuestions();
+        fetchFAQs();
       } catch (error) {
         console.error("Error deleting question:", error);
       }
@@ -148,6 +180,7 @@ const FAQPage = () => {
   // Handle logout
   const handleLogout = () => {
     setIsAdmin(false);
+    setAdminUsername('');
     setAdminPassword('');
   };
 
@@ -162,16 +195,21 @@ const FAQPage = () => {
 
       <div className="faq-content">
         <div className="faq-list">
-          {faqs.map((faq, index) => (
-            <div className="faq-item" key={index}>
-              <div className="faq-question">
-                <h3>Q: {faq.question}</h3>
+          {faqs.length > 0 ? (
+            faqs.map((faq, index) => (
+              <div className="faq-item" key={index}>
+                <div className="faq-question">
+                  <h3>Q: {faq.question}</h3>
+                  <small>Asked on: {faq.date}</small>
+                </div>
+                <div className="faq-answer">
+                  <p>A: {faq.answer}</p>
+                </div>
               </div>
-              <div className="faq-answer">
-                <p>A: {faq.answer}</p>
-              </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>No FAQs available yet. Be the first to ask a question!</p>
+          )}
         </div>
 
         <div className="ask-question">
@@ -211,14 +249,30 @@ const FAQPage = () => {
         <div className="admin-login">
           <h3>Admin Access</h3>
           <form onSubmit={handleAdminLogin}>
-            <input
-              type="password"
-              value={adminPassword}
-              onChange={(e) => setAdminPassword(e.target.value)}
-              placeholder="Admin Password"
-              required
-            />
+            <div className="form-group">
+              <label htmlFor="admin-username">Username:</label>
+              <input
+                type="text"
+                id="admin-username"
+                value={adminUsername}
+                onChange={(e) => setAdminUsername(e.target.value)}
+                placeholder="Admin Username"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="admin-password">Password:</label>
+              <input
+                type="password"
+                id="admin-password"
+                value={adminPassword}
+                onChange={(e) => setAdminPassword(e.target.value)}
+                placeholder="Admin Password"
+                required
+              />
+            </div>
             <button type="submit">Login</button>
+            {loginError && <p className="error-message">{loginError}</p>}
           </form>
         </div>
       ) : (
@@ -226,55 +280,80 @@ const FAQPage = () => {
           <h2>Admin Panel</h2>
           <button onClick={handleLogout} className="logout-btn">Logout</button>
           
-          <h3>Pending Questions</h3>
-          <div className="pending-questions">
-            {pendingQuestions.length === 0 ? (
-              <p>No pending questions.</p>
-            ) : (
-              pendingQuestions.map((q) => (
-                <div key={q.id} className="pending-question">
-                  <p><strong>Question:</strong> {q.question}</p>
-                  <p><strong>From:</strong> {q.email}</p>
-                  <p><strong>Date:</strong> {q.date}</p>
-                  
-                  {!q.answered ? (
-                    <>
-                      {currentQuestionId === q.id ? (
-                        <div className="answer-form">
-                          <textarea
-                            value={answerText}
-                            onChange={(e) => setAnswerText(e.target.value)}
-                            placeholder="Write your answer here"
-                            rows="4"
-                          ></textarea>
-                          <div className="answer-buttons">
-                            <button onClick={() => handleSubmitAnswer(q.id)}>
-                              Submit Answer
+          <div className="admin-tabs">
+            <h3>Questions Management</h3>
+            <div className="pending-questions">
+              {pendingQuestions.length === 0 ? (
+                <p>No questions found.</p>
+              ) : (
+                pendingQuestions.map((q) => (
+                  <div key={q.id} className="question-card">
+                    <div className="question-header">
+                      <h4>Question: {q.question}</h4>
+                      <div className="question-meta">
+                        <p><strong>From:</strong> {q.email}</p>
+                        <p><strong>Date:</strong> {q.date}</p>
+                        <p><strong>Status:</strong> {q.answered ? 'Answered' : 'Pending'}</p>
+                        {q.answered && <p><strong>Published:</strong> {q.published ? 'Yes' : 'No'}</p>}
+                      </div>
+                    </div>
+                    
+                    {q.answered ? (
+                      <div className="answer-section">
+                        <p><strong>Answer:</strong> {q.answer}</p>
+                        <div className="admin-actions">
+                          <button 
+                            onClick={() => togglePublishStatus(q.id, q.published)}
+                            className={q.published ? "unpublish-btn" : "publish-btn"}
+                          >
+                            {q.published ? 'Unpublish' : 'Publish'}
+                          </button>
+                          <button 
+                            onClick={() => handleDeleteQuestion(q.id)}
+                            className="delete-btn"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="answer-section">
+                        {currentQuestionId === q.id ? (
+                          <div className="answer-form">
+                            <textarea
+                              value={answerText}
+                              onChange={(e) => setAnswerText(e.target.value)}
+                              placeholder="Write your answer here"
+                              rows="4"
+                            ></textarea>
+                            <div className="answer-buttons">
+                              <button onClick={() => handleSubmitAnswer(q.id)}>
+                                Submit Answer
+                              </button>
+                              <button onClick={() => setCurrentQuestionId(null)}>
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="admin-actions">
+                            <button onClick={() => setCurrentQuestionId(q.id)}>
+                              Answer
                             </button>
-                            <button onClick={() => setCurrentQuestionId(null)}>
-                              Cancel
+                            <button 
+                              onClick={() => handleDeleteQuestion(q.id)}
+                              className="delete-btn"
+                            >
+                              Delete
                             </button>
                           </div>
-                        </div>
-                      ) : (
-                        <button onClick={() => setCurrentQuestionId(q.id)}>
-                          Answer
-                        </button>
-                      )}
-                    </>
-                  ) : (
-                    <p><strong>Answered:</strong> {q.answer}</p>
-                  )}
-                  
-                  <button 
-                    onClick={() => handleDeleteQuestion(q.id)}
-                    className="delete-btn"
-                  >
-                    Delete
-                  </button>
-                </div>
-              ))
-            )}
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
       )}

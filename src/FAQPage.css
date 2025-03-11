@@ -12,17 +12,17 @@
   align-items: center;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid #e1e1e1;
 }
 
 .faq-header h1 {
-  font-size: 2rem;
+  margin: 0;
   color: #333;
 }
 
 .back-button {
   padding: 0.5rem 1rem;
-  background-color: #336699;
+  background-color: #333;
   color: white;
   border: none;
   border-radius: 4px;
@@ -31,61 +31,76 @@
 }
 
 .back-button:hover {
-  background-color: #254d74;
+  background-color: #555;
 }
 
 .faq-content {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 2rem;
 }
 
+@media (min-width: 768px) {
+  .faq-content {
+    grid-template-columns: 3fr 2fr;
+  }
+}
+
 .faq-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .faq-item {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.faq-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .faq-question h3 {
-  font-size: 1.2rem;
-  color: #333;
+  margin-top: 0;
   margin-bottom: 0.5rem;
+  color: #444;
 }
 
-.faq-answer p {
-  color: #555;
-  line-height: 1.6;
+.faq-question small {
+  color: #777;
+  font-size: 0.8rem;
+}
+
+.faq-answer {
+  margin-top: 1rem;
 }
 
 .ask-question {
-  background-color: #f0f5ff;
-  padding: 2rem;
+  background-color: #f1f1f1;
+  padding: 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .ask-question h2 {
-  font-size: 1.5rem;
-  color: #333;
+  margin-top: 0;
   margin-bottom: 1.5rem;
+  color: #333;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: bold;
-  color: #333;
 }
 
 .form-group input,
@@ -98,98 +113,151 @@
 }
 
 .submit-btn {
-  background-color: #336699;
+  padding: 0.75rem 1.5rem;
+  background-color: #4CAF50;
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 1rem;
   transition: background-color 0.3s;
 }
 
 .submit-btn:hover {
-  background-color: #254d74;
+  background-color: #45a049;
 }
 
 .submit-btn:disabled {
-  background-color: #999;
+  background-color: #cccccc;
   cursor: not-allowed;
 }
 
 .submit-message {
   margin-top: 1rem;
   padding: 0.75rem;
-  background-color: #e6f7e6;
+  background-color: #e7f3e8;
   border-radius: 4px;
   color: #2e7d32;
 }
 
-/* Admin Panel Styles */
 .admin-login {
-  margin-top: 2rem;
+  margin-top: 3rem;
   padding: 1.5rem;
   background-color: #f5f5f5;
   border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .admin-login h3 {
-  margin-bottom: 1rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
   color: #333;
 }
 
-.admin-login input {
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-right: 0.5rem;
+.admin-login form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.admin-login button,
-.admin-panel button {
-  padding: 0.5rem 1rem;
-  background-color: #336699;
+.admin-login button {
+  align-self: flex-start;
+  padding: 0.75rem 1.5rem;
+  background-color: #2196F3;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.admin-login button:hover {
+  background-color: #0b7dda;
+}
+
+.error-message {
+  color: #d32f2f;
+  margin-top: 0.5rem;
 }
 
 .admin-panel {
-  margin-top: 2rem;
+  margin-top: 3rem;
   padding: 1.5rem;
-  background-color: #f0f5ff;
+  background-color: #f5f5f5;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .admin-panel h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
 }
 
 .logout-btn {
-  background-color: #d32f2f !important;
+  padding: 0.5rem 1rem;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #d32f2f;
+}
+
+.admin-tabs {
+  margin-top: 1.5rem;
+}
+
+.admin-tabs h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #ddd;
 }
 
 .pending-questions {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 1.5rem;
 }
 
-.pending-question {
+.question-card {
   background-color: white;
-  padding: 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.answer-form {
+.question-header h4 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.question-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.question-meta p {
+  margin: 0;
+}
+
+.answer-section {
   margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
 }
 
 .answer-form textarea {
@@ -197,28 +265,74 @@
   padding: 0.75rem;
   border: 1px solid #ddd;
   border-radius: 4px;
-  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
 }
 
-.answer-buttons {
+.answer-buttons, .admin-actions {
   display: flex;
   gap: 0.5rem;
 }
 
-.delete-btn {
-  margin-top: 1rem;
-  background-color: #d32f2f !important;
+.answer-buttons button, .admin-actions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
 }
 
-@media (max-width: 768px) {
-  .faq-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-  
-  .ask-question,
-  .admin-panel {
-    padding: 1.5rem;
-  }
+.answer-buttons button:first-child {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.answer-buttons button:first-child:hover {
+  background-color: #45a049;
+}
+
+.answer-buttons button:last-child {
+  background-color: #f44336;
+  color: white;
+}
+
+.answer-buttons button:last-child:hover {
+  background-color: #d32f2f;
+}
+
+.admin-actions button:first-child {
+  background-color: #2196F3;
+  color: white;
+}
+
+.admin-actions button:first-child:hover {
+  background-color: #0b7dda;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #d32f2f;
+}
+
+.publish-btn {
+  background-color: #4CAF50 !important;
+  color: white;
+}
+
+.publish-btn:hover {
+  background-color: #45a049 !important;
+}
+
+.unpublish-btn {
+  background-color: #ff9800 !important;
+  color: white;
+}
+
+.unpublish-btn:hover {
+  background-color: #e68a00 !important;
 }
