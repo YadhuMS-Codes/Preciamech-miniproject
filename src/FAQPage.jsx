@@ -96,19 +96,25 @@ const FAQPage = () => {
   const handleAdminLogin = async (e) => {
     e.preventDefault();
     setLoginError('');
+    setIsLoading(true);
     
     try {
+      console.log("Attempting login with:", adminUsername);
       const isAuthenticated = await authenticateAdmin(adminUsername, adminPassword);
       
       if (isAuthenticated) {
+        console.log("Authentication successful!");
         setIsAdmin(true);
         fetchPendingQuestions();
       } else {
+        console.log("Authentication failed - invalid credentials");
         setLoginError('Invalid username or password');
       }
     } catch (error) {
       console.error("Login error:", error);
       setLoginError('Authentication failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 

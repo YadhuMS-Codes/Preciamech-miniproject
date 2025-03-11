@@ -799,7 +799,8 @@ export default function App() {
       {renderContent()}
 
       {currentPage === 'home' && (
-        <footer><div className="footer-content">
+        <footer className="main-footer">
+          <div className="footer-content">
             <div className="footer-info">
               <div className="footer-logo">
                 <img src="/logoprecia.png" alt="PreciaMech Logo" className="footer-logo-image" />
