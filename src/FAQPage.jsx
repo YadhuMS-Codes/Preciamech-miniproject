@@ -31,14 +31,16 @@ const FAQPage = () => {
   const [currentQuestionId, setCurrentQuestionId] = useState(null);
   const [loginError, setLoginError] = useState('');
 
-  // Fetch FAQs on component mount
+  // Fetch FAQs on component mount and when admin state changes
   useEffect(() => {
+    console.log("Fetching initial FAQs");
     fetchFAQs();
-  }, []);
+  }, [isAdmin]); // Refresh when admin logs in/out
 
   // Fetch all published FAQs
   const fetchFAQs = async () => {
     try {
+      console.log("Fetching FAQs");
       // Get questions that have been answered and marked as published
       const q = query(
         collection(db, "questions"), 
@@ -48,12 +50,18 @@ const FAQPage = () => {
       );
       
       const querySnapshot = await getDocs(q);
-      const faqList = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        date: doc.data().createdAt ? new Date(doc.data().createdAt.toDate()).toLocaleDateString() : ''
-      }));
+      console.log("FAQ docs found:", querySnapshot.docs.length);
       
+      const faqList = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          date: data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString() : new Date().toLocaleDateString()
+        };
+      });
+      
+      console.log("Processed FAQs:", faqList);
       setFaqs(faqList);
     } catch (error) {
       console.error("Error fetching FAQs:", error);
@@ -137,6 +145,7 @@ const FAQPage = () => {
   // Submit answer to question
   const handleSubmitAnswer = async (questionId) => {
     try {
+      console.log("Submitting answer for question:", questionId);
       // Update the question with the answer
       await updateDoc(doc(db, "questions", questionId), {
         answer: answerText,
@@ -147,10 +156,12 @@ const FAQPage = () => {
       // Reset and refresh
       setAnswerText('');
       setCurrentQuestionId(null);
-      fetchPendingQuestions();
       
-      // Refresh FAQs to show the newly answered question
-      fetchFAQs();
+      // Wait a moment for Firestore to update
+      setTimeout(() => {
+        fetchPendingQuestions();
+        fetchFAQs(); // Refresh FAQs to show the newly answered question
+      }, 500);
     } catch (error) {
       console.error("Error submitting answer:", error);
     }
