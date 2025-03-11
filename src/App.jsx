@@ -6,7 +6,8 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './i18n';
 import './App.css';
-//import ImageSlider from './ImageSlider'; // Removed import
+//import ImageSlider from './ImageSlider'; // Removed import -  This import was likely causing the error.  The Gallery section needs to be handled differently.
+
 export default function App() {
    const navigate = useNavigate();
   const { t, i18n } = useTranslation();
@@ -682,23 +683,22 @@ export default function App() {
               </div>
             ))}
           </div>
-          {/* <button 
+
+          <button 
             className="view-more-faq" 
-            onClick={() => setCurrentPage('faq')}
+            onClick={() => navigate("/faq")} // Navigates to FAQPage.jsx
           >
             View More FAQs
-          </button>*/}
-
-
-<button 
-  className="view-more-faq" 
-  onClick={() => navigate("/faq")} // Navigates to FAQPage.jsx
->
-  View More FAQs
-</button>
+          </button>
         </section>
 
-        {/* Gallery section removed as requested */}
+        {/* Gallery section - Placeholder for now */}
+        <section id="Gallery">
+          <div>
+            <h2 className="text-center text-2xl font-bold mb-4">Company Gallery</h2>
+            <p className="text-center">Gallery images coming soon</p>
+          </div>
+        </section>
 
         <section id="contact" className="contact">
           <h2 data-aos="fade-up">Request Proposal</h2>
@@ -799,8 +799,7 @@ export default function App() {
       {renderContent()}
 
       {currentPage === 'home' && (
-        <footer>
-          <div className="footer-content">
+        <footer><div className="footer-content">
             <div className="footer-info">
               <div className="footer-logo">
                 <img src="/logoprecia.png" alt="PreciaMech Logo" className="footer-logo-image" />
