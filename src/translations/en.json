@@ -1,0 +1,69 @@
+
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "PRECIAMECH ENGINEERING CONSULTANTS",
+    "subtitle": "Your Partner in Engineering Excellence"
+  },
+  "services": {
+    "title": "Our Services",
+    "architectural": {
+      "title": "Architectural Design",
+      "description": "Innovative solutions for complex engineering challenges",
+      "items": [
+        "Design Basis",
+        "Plot Plan Development",
+        "Statutory Drawings",
+        "Floor Plans, Sections, Elevations",
+        "3D Designs"
+      ]
+    },
+    "project": {
+      "title": "Project Management",
+      "description": "Streamlined project delivery and resource optimization",
+      "items": [
+        "Agile Project Management",
+        "Resource Planning & Allocation",
+        "Risk Assessment",
+        "Quality Control Systems"
+      ]
+    },
+    "consulting": {
+      "title": "Technical Consulting",
+      "description": "Expert guidance for technical challenges",
+      "items": [
+        "Process Optimization",
+        "Technical Due Diligence",
+        "Innovation Strategy",
+        "Digital Transformation"
+      ]
+    }
+  },
+  "projects": {
+    "title": "Recent Projects",
+    "automation": {
+      "title": "Industrial Automation",
+      "description": "Manufacturing facility optimization"
+    },
+    "infrastructure": {
+      "title": "Infrastructure Design",
+      "description": "Urban development project"
+    },
+    "energy": {
+      "title": "Energy Solutions",
+      "description": "Renewable energy implementation"
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send Message"
+  }
+}

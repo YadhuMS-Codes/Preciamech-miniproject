@@ -6,5 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
+    allowedHosts:['.replit.dev'],
+    base:'/Mini-projet',
   }
 })
