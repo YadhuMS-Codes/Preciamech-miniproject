@@ -1,4 +1,3 @@
-
 // Script to add admin user to Firestore
 import { initializeApp } from "firebase/app";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
@@ -11,7 +10,7 @@ const firebaseConfig = {
   storageBucket: "preciamech-63537.appspot.com",
   messagingSenderId: "373438186510",
   appId: "1:373438186510:web:d20daf88ab0fd04be0685f",
-  measurementId: "G-5ZRRRH6C38"
+  measurementId: "G-5ZRRRH6C38",
 };
 
 // Initialize Firebase
@@ -23,7 +22,7 @@ async function addAdmin() {
   try {
     await setDoc(doc(db, "admins", "admin1"), {
       username: "admin",
-      password: "adminpassword123"
+      password: "admin123",
     });
     console.log("Admin user added successfully!");
   } catch (error) {
