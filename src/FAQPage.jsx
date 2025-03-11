@@ -1,88 +1,40 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './FAQPage.css';
-import { db } from "./firebaseConfig";
-import { collection, addDoc, getDocs, updateDoc, doc, serverTimestamp, query, orderBy } from "firebase/firestore";
+import { db } from './firebaseConfig';
+import { collection, addDoc, getDocs, query, orderBy, doc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
 
-export default function FAQPage() {
+const FAQPage = () => {
+  const navigate = useNavigate();
+  const [faqs, setFaqs] = useState([]);
   const [question, setQuestion] = useState('');
   const [email, setEmail] = useState('');
-  const [adminMode, setAdminMode] = useState(false);
-  const [adminUsername, setAdminUsername] = useState('');
-  const [adminPassword, setAdminPassword] = useState('');
   const [submitMessage, setSubmitMessage] = useState('');
-  const [pendingQuestions, setPendingQuestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [answerText, setAnswerText] = useState({});
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminPassword, setAdminPassword] = useState('');
+  const [pendingQuestions, setPendingQuestions] = useState([]);
+  const [answerText, setAnswerText] = useState('');
+  const [currentQuestionId, setCurrentQuestionId] = useState(null);
 
-  // Complete FAQ list
-  const faqs = [
-    {
-      id: 1,
-      question: "What services do you provide?",
-      answer: "We offer comprehensive engineering services including architectural design, project management, and technical consulting across various industries."
-    },
-    {
-      id: 2,
-      question: "How do you ensure project quality?",
-      answer: "We maintain strict quality control measures, follow industry best practices, and employ experienced professionals to ensure the highest standards in all our projects."
-    },
-    {
-      id: 3,
-      question: "What is your project timeline?",
-      answer: "Project timelines vary based on scope and complexity. We provide detailed project schedules during the initial consultation phase."
-    },
-    {
-      id: 4,
-      question: "Do you handle international projects?",
-      answer: "Yes, we have experience working with clients globally and can adapt to different international standards and requirements."
-    },
-    {
-      id: 5,
-      question: "What industries do you specialize in?",
-      answer: "We specialize in Pharmaceuticals (API & Formulations), Chemical, Food & Beverages, and FMCG industries, with 25+ years of experience in these sectors."
-    },
-    {
-      id: 6,
-      question: "How do you handle confidential projects?",
-      answer: "We sign NDAs and follow strict confidentiality protocols. All project information is kept secure and only accessible to team members working directly on the project."
-    },
-    {
-      id: 7,
-      question: "What's your approach to sustainable design?",
-      answer: "We incorporate sustainable design principles in all our projects, focusing on energy efficiency, minimal environmental impact, and long-term sustainability."
-    },
-    {
-      id: 8,
-      question: "How do you manage unexpected challenges during a project?",
-      answer: "We have a robust risk management system. We identify potential risks early, develop contingency plans, and maintain transparent communication with clients throughout the process."
-    }
-  ];
-
-  // Fetch questions from Firestore
+  // Fetch FAQs on component mount
   useEffect(() => {
-    const fetchQuestions = async () => {
-      setIsLoading(true);
+    const fetchFAQs = async () => {
       try {
-        const q = query(collection(db, "questions"), orderBy("createdAt", "desc"));
+        const q = query(collection(db, "faqs"), orderBy("createdAt", "desc"));
         const querySnapshot = await getDocs(q);
-        const questionList = querySnapshot.docs.map(doc => ({
+        const faqList = querySnapshot.docs.map(doc => ({
           id: doc.id,
-          ...doc.data(),
-          date: doc.data().createdAt ? new Date(doc.data().createdAt.toDate()).toLocaleDateString() : new Date().toLocaleDateString()
+          ...doc.data()
         }));
-        setPendingQuestions(questionList);
+        setFaqs(faqList);
       } catch (error) {
-        console.error("Error fetching questions:", error);
-        setSubmitMessage("Error loading questions. Please try again later.");
-        setTimeout(() => setSubmitMessage(""), 5000);
-      } finally {
-        setIsLoading(false);
+        console.error("Error fetching FAQs:", error);
       }
     };
 
-    fetchQuestions();
+    fetchFAQs();
   }, []);
 
   // Submit question to Firestore
@@ -103,15 +55,10 @@ export default function FAQPage() {
       setQuestion('');
       setEmail('');
       
-      // Refresh questions list
-      const q = query(collection(db, "questions"), orderBy("createdAt", "desc"));
-      const querySnapshot = await getDocs(q);
-      const questionList = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        date: doc.data().createdAt ? new Date(doc.data().createdAt.toDate()).toLocaleDateString() : new Date().toLocaleDateString()
-      }));
-      setPendingQuestions(questionList);
+      // Refresh questions list if in admin mode
+      if (isAdmin) {
+        fetchPendingQuestions();
+      }
     } catch (error) {
       console.error("Error adding question:", error);
       setSubmitMessage("Error submitting your question. Please try again later.");
@@ -121,180 +68,218 @@ export default function FAQPage() {
     }
   };
 
+  // Admin login
   const handleAdminLogin = (e) => {
     e.preventDefault();
-    // In a real application, this would verify credentials against a database
-    // For demo purposes, we're using hardcoded credentials
-    if (adminUsername === 'admin' && adminPassword === 'password') {
-      setAdminMode(true);
-      setSubmitMessage('Admin logged in successfully');
-      setTimeout(() => setSubmitMessage(''), 3000);
+    // Simple password check - in a real app, use secure authentication
+    if (adminPassword === 'admin123') { // This should be replaced with proper authentication
+      setIsAdmin(true);
+      fetchPendingQuestions();
     } else {
-      setSubmitMessage('Invalid credentials');
-      setTimeout(() => setSubmitMessage(''), 3000);
+      alert('Incorrect password');
     }
   };
 
-  const handleAnswerChange = (id, text) => {
-    setAnswerText({ ...answerText, [id]: text });
-  };
-
-  const handleAnswerQuestion = async (id) => {
-    if (!answerText[id] || answerText[id].trim() === '') {
-      setSubmitMessage('Please provide an answer before submitting');
-      setTimeout(() => setSubmitMessage(''), 3000);
-      return;
-    }
-
-    setIsLoading(true);
+  // Fetch pending questions for admin
+  const fetchPendingQuestions = async () => {
     try {
-      const questionRef = doc(db, "questions", id);
-      await updateDoc(questionRef, {
-        answered: true,
-        answer: answerText[id],
-        answeredAt: serverTimestamp()
+      const q = query(collection(db, "questions"), orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      const questionList = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        date: doc.data().createdAt ? new Date(doc.data().createdAt.toDate()).toLocaleDateString() : new Date().toLocaleDateString()
+      }));
+      setPendingQuestions(questionList);
+    } catch (error) {
+      console.error("Error fetching questions:", error);
+    }
+  };
+
+  // Submit answer to question and add to FAQs
+  const handleSubmitAnswer = async (questionId) => {
+    try {
+      // Update the question with the answer
+      await updateDoc(doc(db, "questions", questionId), {
+        answer: answerText,
+        answered: true
       });
 
-      // Update the local state
-      setPendingQuestions(prevQuestions => 
-        prevQuestions.map(q => 
-          q.id === id ? {...q, answered: true, answer: answerText[id]} : q
-        )
-      );
-      setSubmitMessage('Answer submitted successfully');
+      // Get the question data
+      const questionSnapshot = pendingQuestions.find(q => q.id === questionId);
+      
+      // Add to FAQs collection
+      await addDoc(collection(db, "faqs"), {
+        question: questionSnapshot.question,
+        answer: answerText,
+        createdAt: serverTimestamp()
+      });
+
+      // Reset and refresh
+      setAnswerText('');
+      setCurrentQuestionId(null);
+      fetchPendingQuestions();
+      
+      // Refresh FAQs
+      const q = query(collection(db, "faqs"), orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      const faqList = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setFaqs(faqList);
     } catch (error) {
-      console.error("Error updating question:", error);
-      setSubmitMessage("Error submitting answer. Please try again.");
-    } finally {
-      setIsLoading(false);
-      setTimeout(() => setSubmitMessage(''), 3000);
+      console.error("Error submitting answer:", error);
     }
+  };
+
+  // Delete question
+  const handleDeleteQuestion = async (questionId) => {
+    if (window.confirm('Are you sure you want to delete this question?')) {
+      try {
+        await deleteDoc(doc(db, "questions", questionId));
+        fetchPendingQuestions();
+      } catch (error) {
+        console.error("Error deleting question:", error);
+      }
+    }
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    setIsAdmin(false);
+    setAdminPassword('');
   };
 
   return (
-    <div className="faq-page">
-      <nav className="faq-nav">
-        <div className="logo-container">
-          <img src="/logoprecia.png" alt="PreciaMech Logo" className="logo-image" />
-          <div className="logo">
-            PRECIAMECH
-            <span className="logo-subtitle">ENGINEERING CONSULTANTS</span>
-          </div>
-        </div>
-        <div className="nav-links">
-          <Link to="/">Back to Home</Link>
-        </div>
-      </nav>
-
-      <div className="faq-container">
+    <div className="faq-page-container">
+      <div className="faq-header">
         <h1>Frequently Asked Questions</h1>
+        <button onClick={() => navigate('/')} className="back-button">
+          Back to Home
+        </button>
+      </div>
 
+      <div className="faq-content">
         <div className="faq-list">
-          {faqs.map((faq) => (
-            <div key={faq.id} className="faq-item">
-              <h3>{faq.question}</h3>
-              <p>{faq.answer}</p>
+          {faqs.map((faq, index) => (
+            <div className="faq-item" key={index}>
+              <div className="faq-question">
+                <h3>Q: {faq.question}</h3>
+              </div>
+              <div className="faq-answer">
+                <p>A: {faq.answer}</p>
+              </div>
             </div>
           ))}
         </div>
 
-        <div className="ask-question-section">
-          <h2>Ask a Question</h2>
+        <div className="ask-question">
+          <h2>Have a Question?</h2>
           <form onSubmit={handleSubmitQuestion}>
-            <input 
-              type="email" 
-              placeholder="Your Email" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              required 
-              disabled={isLoading}
-            />
-            <textarea 
-              placeholder="Your Question" 
-              value={question} 
-              onChange={(e) => setQuestion(e.target.value)} 
-              required
-              disabled={isLoading}
-            ></textarea>
-            <button type="submit" disabled={isLoading}>
-              {isLoading ? "Submitting..." : "Submit Question"}
+            <div className="form-group">
+              <label htmlFor="email">Your Email:</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="Enter your email"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="question">Your Question:</label>
+              <textarea
+                id="question"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                required
+                placeholder="Enter your question"
+                rows="4"
+              ></textarea>
+            </div>
+            <button type="submit" className="submit-btn" disabled={isLoading}>
+              {isLoading ? 'Submitting...' : 'Submit Question'}
             </button>
+            {submitMessage && <p className="submit-message">{submitMessage}</p>}
           </form>
         </div>
-
-        {submitMessage && <div className="submit-message">{submitMessage}</div>}
-
-        {!adminMode ? (
-          <div className="admin-login-section">
-            <h2>Admin Login</h2>
-            <form onSubmit={handleAdminLogin}>
-              <input 
-                type="text" 
-                placeholder="Username" 
-                value={adminUsername} 
-                onChange={(e) => setAdminUsername(e.target.value)} 
-                required 
-                disabled={isLoading}
-              />
-              <input 
-                type="password" 
-                placeholder="Password" 
-                value={adminPassword} 
-                onChange={(e) => setAdminPassword(e.target.value)} 
-                required 
-                disabled={isLoading}
-              />
-              <button type="submit" disabled={isLoading}>Login</button>
-            </form>
-          </div>
-        ) : (
-          <div className="admin-panel">
-            <h2>Admin Panel</h2>
-            {isLoading && <p>Loading...</p>}
-            <div className="pending-questions">
-              <h3>User Questions</h3>
-              {pendingQuestions.length === 0 ? (
-                <p>No questions found</p>
-              ) : (
-                pendingQuestions.map((q) => (
-                  <div key={q.id} className={`pending-question ${q.answered ? 'answered' : ''}`}>
-                    <p><strong>Question:</strong> {q.question}</p>
-                    <p><strong>Email:</strong> {q.email}</p>
-                    <p><strong>Date:</strong> {q.date}</p>
-                    {q.answered && (
-                      <div className="answer-section">
-                        <p><strong>Answer:</strong> {q.answer}</p>
-                        <span className="answered-tag">Answered</span>
-                      </div>
-                    )}
-                    {!q.answered && (
-                      <div className="admin-actions">
-                        <textarea 
-                          placeholder="Type your answer here..." 
-                          value={answerText[q.id] || ''}
-                          onChange={(e) => handleAnswerChange(q.id, e.target.value)}
-                          disabled={isLoading}
-                        ></textarea>
-                        <button 
-                          onClick={() => handleAnswerQuestion(q.id)}
-                          disabled={isLoading}
-                        >
-                          {isLoading ? "Sending..." : "Send Answer"}
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                ))
-              )}
-            </div>
-            <button onClick={() => setAdminMode(false)} disabled={isLoading}>Logout</button>
-          </div>
-        )}
       </div>
 
-      <footer>
-        <p>&copy; 2025 Preciamech Consultants. All rights reserved.</p>
-      </footer>
+      {!isAdmin ? (
+        <div className="admin-login">
+          <h3>Admin Access</h3>
+          <form onSubmit={handleAdminLogin}>
+            <input
+              type="password"
+              value={adminPassword}
+              onChange={(e) => setAdminPassword(e.target.value)}
+              placeholder="Admin Password"
+              required
+            />
+            <button type="submit">Login</button>
+          </form>
+        </div>
+      ) : (
+        <div className="admin-panel">
+          <h2>Admin Panel</h2>
+          <button onClick={handleLogout} className="logout-btn">Logout</button>
+          
+          <h3>Pending Questions</h3>
+          <div className="pending-questions">
+            {pendingQuestions.length === 0 ? (
+              <p>No pending questions.</p>
+            ) : (
+              pendingQuestions.map((q) => (
+                <div key={q.id} className="pending-question">
+                  <p><strong>Question:</strong> {q.question}</p>
+                  <p><strong>From:</strong> {q.email}</p>
+                  <p><strong>Date:</strong> {q.date}</p>
+                  
+                  {!q.answered ? (
+                    <>
+                      {currentQuestionId === q.id ? (
+                        <div className="answer-form">
+                          <textarea
+                            value={answerText}
+                            onChange={(e) => setAnswerText(e.target.value)}
+                            placeholder="Write your answer here"
+                            rows="4"
+                          ></textarea>
+                          <div className="answer-buttons">
+                            <button onClick={() => handleSubmitAnswer(q.id)}>
+                              Submit Answer
+                            </button>
+                            <button onClick={() => setCurrentQuestionId(null)}>
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button onClick={() => setCurrentQuestionId(q.id)}>
+                          Answer
+                        </button>
+                      )}
+                    </>
+                  ) : (
+                    <p><strong>Answered:</strong> {q.answer}</p>
+                  )}
+                  
+                  <button 
+                    onClick={() => handleDeleteQuestion(q.id)}
+                    className="delete-btn"
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default FAQPage;

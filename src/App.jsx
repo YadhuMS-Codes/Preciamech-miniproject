@@ -6,7 +6,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './i18n';
 import './App.css';
-import ImageSlider from './ImageSlider';
+//import ImageSlider from './ImageSlider'; // Removed import
 export default function App() {
    const navigate = useNavigate();
   const { t, i18n } = useTranslation();
@@ -698,12 +698,7 @@ export default function App() {
 </button>
         </section>
 
-        <section id="Gallery">
-          <div>
-            <h2 className="text-center text-2xl font-bold mb-4">Company Gallery</h2>
-            <ImageSlider />
-          </div>
-        </section>
+        {/* Gallery section removed as requested */}
 
         <section id="contact" className="contact">
           <h2 data-aos="fade-up">Request Proposal</h2>
@@ -801,7 +796,7 @@ export default function App() {
         </nav>
       )}
 
-      {renderContent()}}
+      {renderContent()}
 
       {currentPage === 'home' && (
         <footer>
