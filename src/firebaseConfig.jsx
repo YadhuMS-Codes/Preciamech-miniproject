@@ -6,9 +6,9 @@ import { getFirestore } from "firebase/firestore";
 // Your Firebase configuration (Replace with your own keys)
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  authDomain: "preciamech-63537.firebaseapp.com",
+  projectId: "preciamech-63537",
+  storageBucket: "preciamech-63537.appspot.com",
   messagingSenderId: "YOUR_SENDER_ID",
   appId: "YOUR_APP_ID"
 };
