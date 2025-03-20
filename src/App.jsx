@@ -765,7 +765,7 @@ export default function App() {
             </div>
           </div>
           <div className="nav-links">
-            <a href="/faq" onClick={() => navigate('/faq')}>
+            <a href="/admin" onClick={() => navigate('/admin')}>
               Admin Login</a>
             <a href="#home">{t("nav.home")}</a>
             <a href="#services">{t("nav.services")}</a>
