@@ -224,6 +224,7 @@ const FAQPage = () => {
         <button onClick={() => navigate('/')} className="back-button">
           Back to Home
         </button>
+        
       </div>
 
       <div className="faq-content">
