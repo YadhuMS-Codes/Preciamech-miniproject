@@ -128,3 +128,16 @@ input, textarea {
   border: 1px solid #ddd;
   border-radius: 4px;
 }
+
+.image-preview {
+  margin: 10px 0;
+}
+
+.image-preview img {
+  max-width: 300px;
+  max-height: 200px;
+  object-fit: contain;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+}

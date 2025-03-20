@@ -330,7 +330,12 @@ const AdminPage = () => {
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
                   required
-                /> {/* Changed to text input for URL */}
+                />
+                {imageUrl && (
+                  <div className="image-preview">
+                    <img src={imageUrl} alt="Preview" />
+                  </div>
+                )}
                 <button type="submit">Add Project</button>
               </form>
 

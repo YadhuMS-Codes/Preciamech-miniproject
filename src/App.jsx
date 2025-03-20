@@ -48,7 +48,7 @@ export default function App() {
         console.error("Error fetching projects:", error);
       }
     };
-    
+
     fetchProjects();
   }, []);
 
@@ -574,11 +574,17 @@ export default function App() {
                     data-aos="fade-up" 
                     data-aos-delay={(index % 3) * 100}
                   >
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      loading="lazy"
-                    />
+                    {project.image && (
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = '/logoprecia.png'; // Fallback image
+                        }}
+                      />
+                    )}
                     <h3>{project.title}</h3>
                     <p>{project.description}</p>
                   </div>
@@ -805,7 +811,7 @@ export default function App() {
               <div className="footer-column">
                 <h4>Quick Links</h4>
                 <a href="#home">Home</a>
-                <a href="#services">Services</a>
+                <a href"#services">Services</a>
                 <a href="#projects">Projects</a>
                 <a href="#about">About Us</a>
                 <a href="#contact">Contact</a>
