@@ -27,39 +27,25 @@ export default function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(null);
 
-  // Project data
-  const projects = [
-    {
-      id: 1,
-      title: "Plasma Manufacturing Plant",
-      description: "Detailed Engineering of Black utilities",
-      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
-    },
-    {
-      id: 2,
-      title: "Hormone, Onco, Injectable Formulation plant at Russia",
-      description: "Detailed Engineering of Black utilities",
-      image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e"
-    },
-    {
-      id: 3,
-      title: "API Plant",
-      description: "Inspection of process equipment",
-      image: "https://images.unsplash.com/photo-1509391366360-2e959784a276"
-    },
-    {
-      id: 4,
-      title: "Pharmaceutical Facility",
-      description: "Complete HVAC and clean room design",
-      image: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69"
-    },
-    {
-      id: 5,
-      title: "Food Processing Plant",
-      description: "Process engineering and equipment specification",
-      image: "https://images.unsplash.com/photo-1518349619113-03114f06ac3a"
-    }
-  ];
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const projectsQuery = query(collection(db, "projects"), orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(projectsQuery);
+        const projectsList = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setProjects(projectsList);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    };
+    
+    fetchProjects();
+  }, []);
 
   const services = [
     {
