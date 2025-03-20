@@ -32,12 +32,17 @@ export default function App() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const projectsQuery = query(collection(db, "projects"), orderBy("createdAt", "desc"));
+        const projectsQuery = query(
+          collection(db, "projects"), 
+          orderBy("createdAt", "desc")
+        );
         const snapshot = await getDocs(projectsQuery);
-        const projectsList = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
+        const projectsList = snapshot.docs
+          .map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }))
+          .filter(project => project.visible !== false); // Only show visible projects
         setProjects(projectsList);
       } catch (error) {
         console.error("Error fetching projects:", error);

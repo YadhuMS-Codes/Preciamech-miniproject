@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { db, authenticateAdmin } from './firebaseConfig';
+import { db, storage } from './firebaseConfig';
 import { collection, addDoc, getDocs, query, orderBy, doc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import './AdminPage.css';
 
 const AdminPage = () => {
@@ -11,12 +12,30 @@ const AdminPage = () => {
   const [adminUsername, setAdminUsername] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
   const [pendingQuestions, setPendingQuestions] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [answerText, setAnswerText] = useState('');
   const [currentQuestionId, setCurrentQuestionId] = useState(null);
   const [loginError, setLoginError] = useState('');
   const [projectTitle, setProjectTitle] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
-  const [projectImage, setProjectImage] = useState('');
+  const [projectImage, setProjectImage] = useState(null);
+  const [editingQuestion, setEditingQuestion] = useState(null);
+  const [editingProject, setEditingProject] = useState(null);
+
+  // Fetch projects
+  const fetchProjects = async () => {
+    try {
+      const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
+      const snapshot = await getDocs(q);
+      const projectsList = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setProjects(projectsList);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    }
+  };
 
   // Fetch pending questions for admin
   const fetchPendingQuestions = async () => {
@@ -34,15 +53,25 @@ const AdminPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (isAdmin) {
+      fetchPendingQuestions();
+      fetchProjects();
+    }
+  }, [isAdmin]);
+
   // Admin login
   const handleAdminLogin = async (e) => {
     e.preventDefault();
     setLoginError('');
     try {
-      const isAuthenticated = await authenticateAdmin(adminUsername, adminPassword);
-      if (isAuthenticated) {
+      const querySnapshot = await getDocs(query(collection(db, "admins")));
+      const admin = querySnapshot.docs.find(doc => 
+        doc.data().username === adminUsername && doc.data().password === adminPassword
+      );
+      
+      if (admin) {
         setIsAdmin(true);
-        fetchPendingQuestions();
       } else {
         setLoginError('Invalid username or password');
       }
@@ -69,23 +98,119 @@ const AdminPage = () => {
     }
   };
 
+  // Toggle publish status
+  const togglePublishStatus = async (questionId, currentStatus) => {
+    try {
+      const questionRef = doc(db, "questions", questionId);
+      await updateDoc(questionRef, {
+        published: !currentStatus,
+        updatedAt: serverTimestamp()
+      });
+      fetchPendingQuestions();
+    } catch (error) {
+      console.error("Error toggling publish status:", error);
+    }
+  };
+
+  // Edit FAQ
+  const handleEditQuestion = async (questionId) => {
+    try {
+      const questionRef = doc(db, "questions", questionId);
+      await updateDoc(questionRef, {
+        answer: editingQuestion.answer,
+        updatedAt: serverTimestamp()
+      });
+      setEditingQuestion(null);
+      fetchPendingQuestions();
+    } catch (error) {
+      console.error("Error editing question:", error);
+    }
+  };
+
   // Add new project
   const handleAddProject = async (e) => {
     e.preventDefault();
     try {
+      if (!projectImage) {
+        alert('Please select an image');
+        return;
+      }
+
+      const storageRef = ref(storage, `projects/${projectImage.name}`);
+      const snapshot = await uploadBytes(storageRef, projectImage);
+      const imageUrl = await getDownloadURL(snapshot.ref);
+
       await addDoc(collection(db, "projects"), {
         title: projectTitle,
         description: projectDescription,
-        image: projectImage,
+        image: imageUrl,
+        visible: true,
         createdAt: serverTimestamp()
       });
+
       setProjectTitle('');
       setProjectDescription('');
-      setProjectImage('');
+      setProjectImage(null);
+      fetchProjects();
       alert('Project added successfully!');
     } catch (error) {
       console.error("Error adding project:", error);
       alert('Failed to add project');
+    }
+  };
+
+  // Edit project
+  const handleEditProject = async (projectId) => {
+    try {
+      const projectRef = doc(db, "projects", projectId);
+      let updateData = {
+        title: editingProject.title,
+        description: editingProject.description,
+        updatedAt: serverTimestamp()
+      };
+
+      if (projectImage) {
+        const storageRef = ref(storage, `projects/${projectImage.name}`);
+        const snapshot = await uploadBytes(storageRef, projectImage);
+        updateData.image = await getDownloadURL(snapshot.ref);
+      }
+
+      await updateDoc(projectRef, updateData);
+      setEditingProject(null);
+      setProjectImage(null);
+      fetchProjects();
+    } catch (error) {
+      console.error("Error editing project:", error);
+    }
+  };
+
+  // Toggle project visibility
+  const toggleProjectVisibility = async (projectId, currentVisibility) => {
+    try {
+      const projectRef = doc(db, "projects", projectId);
+      await updateDoc(projectRef, {
+        visible: !currentVisibility,
+        updatedAt: serverTimestamp()
+      });
+      fetchProjects();
+    } catch (error) {
+      console.error("Error toggling project visibility:", error);
+    }
+  };
+
+  // Delete project
+  const handleDeleteProject = async (projectId, imageUrl) => {
+    if (window.confirm('Are you sure you want to delete this project?')) {
+      try {
+        await deleteDoc(doc(db, "projects", projectId));
+        if (imageUrl) {
+          const imageRef = ref(storage, imageUrl);
+          await deleteObject(imageRef);
+        }
+        fetchProjects();
+      } catch (error) {
+        console.error("Error deleting project:", error);
+      }
     }
   };
 
@@ -101,15 +226,10 @@ const AdminPage = () => {
     }
   };
 
-  // Logout
-  const handleLogout = () => {
-    setIsAdmin(false);
-    setAdminUsername('');
-    setAdminPassword('');
-  };
-
   return (
     <div className="admin-page">
+      <button className="back-button" onClick={() => navigate('/')}>Back to Home</button>
+      
       {!isAdmin ? (
         <div className="admin-login">
           <h2>Admin Login</h2>
@@ -134,43 +254,72 @@ const AdminPage = () => {
         <div className="admin-dashboard">
           <div className="admin-header">
             <h2>Admin Dashboard</h2>
-            <button onClick={handleLogout}>Logout</button>
+            <button onClick={() => setIsAdmin(false)}>Logout</button>
           </div>
 
           <div className="admin-sections">
             <section className="questions-section">
-              <h3>Pending Questions</h3>
+              <h3>FAQ Management</h3>
               {pendingQuestions.map((question) => (
                 <div key={question.id} className="question-card">
                   <p><strong>Question:</strong> {question.question}</p>
                   <p><strong>From:</strong> {question.email}</p>
                   <p><strong>Date:</strong> {question.date}</p>
-                  {!question.answered ? (
+                  
+                  {editingQuestion?.id === question.id ? (
                     <div>
                       <textarea
-                        placeholder="Write your answer"
-                        value={currentQuestionId === question.id ? answerText : ''}
-                        onChange={(e) => setAnswerText(e.target.value)}
-                        onClick={() => setCurrentQuestionId(question.id)}
+                        value={editingQuestion.answer}
+                        onChange={(e) => setEditingQuestion({
+                          ...editingQuestion,
+                          answer: e.target.value
+                        })}
                       />
-                      <button onClick={() => handleSubmitAnswer(question.id)}>
-                        Submit Answer
+                      <button onClick={() => handleEditQuestion(question.id)}>
+                        Save Changes
+                      </button>
+                      <button onClick={() => setEditingQuestion(null)}>
+                        Cancel
                       </button>
                     </div>
                   ) : (
                     <div>
-                      <p><strong>Answer:</strong> {question.answer}</p>
+                      {!question.answered ? (
+                        <div>
+                          <textarea
+                            placeholder="Write your answer"
+                            value={currentQuestionId === question.id ? answerText : ''}
+                            onChange={(e) => setAnswerText(e.target.value)}
+                            onClick={() => setCurrentQuestionId(question.id)}
+                          />
+                          <button onClick={() => handleSubmitAnswer(question.id)}>
+                            Submit Answer
+                          </button>
+                        </div>
+                      ) : (
+                        <div>
+                          <p><strong>Answer:</strong> {question.answer}</p>
+                          <button onClick={() => setEditingQuestion(question)}>
+                            Edit Answer
+                          </button>
+                        </div>
+                      )}
+                      
+                      <button onClick={() => togglePublishStatus(question.id, question.published)}>
+                        {question.published ? 'Unpublish' : 'Publish'}
+                      </button>
+                      
+                      <button onClick={() => handleDeleteQuestion(question.id)}>
+                        Delete Question
+                      </button>
                     </div>
                   )}
-                  <button onClick={() => handleDeleteQuestion(question.id)}>
-                    Delete Question
-                  </button>
                 </div>
               ))}
             </section>
 
-            <section className="add-project-section">
-              <h3>Add New Project</h3>
+            <section className="projects-section">
+              <h3>Project Management</h3>
               <form onSubmit={handleAddProject}>
                 <input
                   type="text"
@@ -179,22 +328,72 @@ const AdminPage = () => {
                   onChange={(e) => setProjectTitle(e.target.value)}
                   required
                 />
-                <input
-                  type="text"
+                <textarea
                   placeholder="Project Description"
                   value={projectDescription}
                   onChange={(e) => setProjectDescription(e.target.value)}
                   required
                 />
                 <input
-                  type="text"
-                  placeholder="Image URL"
-                  value={projectImage}
-                  onChange={(e) => setProjectImage(e.target.value)}
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setProjectImage(e.target.files[0])}
                   required
                 />
                 <button type="submit">Add Project</button>
               </form>
+
+              <div className="projects-list">
+                {projects.map((project) => (
+                  <div key={project.id} className="project-card">
+                    {editingProject?.id === project.id ? (
+                      <div>
+                        <input
+                          type="text"
+                          value={editingProject.title}
+                          onChange={(e) => setEditingProject({
+                            ...editingProject,
+                            title: e.target.value
+                          })}
+                        />
+                        <textarea
+                          value={editingProject.description}
+                          onChange={(e) => setEditingProject({
+                            ...editingProject,
+                            description: e.target.value
+                          })}
+                        />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => setProjectImage(e.target.files[0])}
+                        />
+                        <button onClick={() => handleEditProject(project.id)}>
+                          Save Changes
+                        </button>
+                        <button onClick={() => setEditingProject(null)}>
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <div>
+                        <img src={project.image} alt={project.title} />
+                        <h4>{project.title}</h4>
+                        <p>{project.description}</p>
+                        <button onClick={() => setEditingProject(project)}>
+                          Edit
+                        </button>
+                        <button onClick={() => toggleProjectVisibility(project.id, project.visible)}>
+                          {project.visible ? 'Hide' : 'Show'}
+                        </button>
+                        <button onClick={() => handleDeleteProject(project.id, project.image)}>
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </section>
           </div>
         </div>

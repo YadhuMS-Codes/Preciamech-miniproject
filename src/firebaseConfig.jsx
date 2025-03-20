@@ -2,6 +2,7 @@
 // Import Firebase modules
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 // Your Firebase configuration - removed process.env reference that was causing errors
@@ -51,4 +52,5 @@ const authenticateAdmin = async (username, password) => {
   }
 };
 
-export { db, authenticateAdmin };
+const storage = getStorage(app);
+export { db, storage, authenticateAdmin };
