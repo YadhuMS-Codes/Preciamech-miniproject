@@ -811,7 +811,7 @@ export default function App() {
               <div className="footer-column">
                 <h4>Quick Links</h4>
                 <a href="#home">Home</a>
-                <a href"#services">Services</a>
+                <a href="#services">Services</a>
                 <a href="#projects">Projects</a>
                 <a href="#about">About Us</a>
                 <a href="#contact">Contact</a>
