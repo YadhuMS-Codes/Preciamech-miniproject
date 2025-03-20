@@ -773,3 +773,25 @@ footer {
 .swiper-pagination-bullet-active {
   background-color: #0097FB !important;
 }
+
+.view-more-faq {
+  display: block;
+  width: fit-content;
+  margin: 30px auto;
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.view-more-faq:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}

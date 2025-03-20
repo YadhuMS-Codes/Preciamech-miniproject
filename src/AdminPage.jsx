@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db, storage } from './firebaseConfig';
@@ -18,7 +17,7 @@ const AdminPage = () => {
   const [loginError, setLoginError] = useState('');
   const [projectTitle, setProjectTitle] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
-  const [projectImage, setProjectImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(''); // Updated state variable
   const [editingQuestion, setEditingQuestion] = useState(null);
   const [editingProject, setEditingProject] = useState(null);
 
@@ -69,7 +68,7 @@ const AdminPage = () => {
       const admin = querySnapshot.docs.find(doc => 
         doc.data().username === adminUsername && doc.data().password === adminPassword
       );
-      
+
       if (admin) {
         setIsAdmin(true);
       } else {
@@ -131,14 +130,10 @@ const AdminPage = () => {
   const handleAddProject = async (e) => {
     e.preventDefault();
     try {
-      if (!projectImage) {
-        alert('Please select an image');
+      if (!imageUrl) {
+        alert('Please enter an image URL');
         return;
       }
-
-      const storageRef = ref(storage, `projects/${projectImage.name}`);
-      const snapshot = await uploadBytes(storageRef, projectImage);
-      const imageUrl = await getDownloadURL(snapshot.ref);
 
       await addDoc(collection(db, "projects"), {
         title: projectTitle,
@@ -150,7 +145,7 @@ const AdminPage = () => {
 
       setProjectTitle('');
       setProjectDescription('');
-      setProjectImage(null);
+      setImageUrl('');
       fetchProjects();
       alert('Project added successfully!');
     } catch (error) {
@@ -169,15 +164,13 @@ const AdminPage = () => {
         updatedAt: serverTimestamp()
       };
 
-      if (projectImage) {
-        const storageRef = ref(storage, `projects/${projectImage.name}`);
-        const snapshot = await uploadBytes(storageRef, projectImage);
-        updateData.image = await getDownloadURL(snapshot.ref);
+      if (imageUrl) { // Use imageUrl instead of projectImage
+        updateData.image = imageUrl;
       }
 
       await updateDoc(projectRef, updateData);
       setEditingProject(null);
-      setProjectImage(null);
+      setImageUrl(''); // Clear imageUrl after update
       fetchProjects();
     } catch (error) {
       console.error("Error editing project:", error);
@@ -203,10 +196,7 @@ const AdminPage = () => {
     if (window.confirm('Are you sure you want to delete this project?')) {
       try {
         await deleteDoc(doc(db, "projects", projectId));
-        if (imageUrl) {
-          const imageRef = ref(storage, imageUrl);
-          await deleteObject(imageRef);
-        }
+        // Image deletion is not needed since we're using URLs now.
         fetchProjects();
       } catch (error) {
         console.error("Error deleting project:", error);
@@ -229,7 +219,7 @@ const AdminPage = () => {
   return (
     <div className="admin-page">
       <button className="back-button" onClick={() => navigate('/')}>Back to Home</button>
-      
+
       {!isAdmin ? (
         <div className="admin-login">
           <h2>Admin Login</h2>
@@ -265,7 +255,7 @@ const AdminPage = () => {
                   <p><strong>Question:</strong> {question.question}</p>
                   <p><strong>From:</strong> {question.email}</p>
                   <p><strong>Date:</strong> {question.date}</p>
-                  
+
                   {editingQuestion?.id === question.id ? (
                     <div>
                       <textarea
@@ -304,11 +294,11 @@ const AdminPage = () => {
                           </button>
                         </div>
                       )}
-                      
+
                       <button onClick={() => togglePublishStatus(question.id, question.published)}>
                         {question.published ? 'Unpublish' : 'Publish'}
                       </button>
-                      
+
                       <button onClick={() => handleDeleteQuestion(question.id)}>
                         Delete Question
                       </button>
@@ -335,11 +325,12 @@ const AdminPage = () => {
                   required
                 />
                 <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setProjectImage(e.target.files[0])}
+                  type="text"
+                  placeholder="Image URL"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
                   required
-                />
+                /> {/* Changed to text input for URL */}
                 <button type="submit">Add Project</button>
               </form>
 
@@ -364,10 +355,11 @@ const AdminPage = () => {
                           })}
                         />
                         <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => setProjectImage(e.target.files[0])}
-                        />
+                          type="text"
+                          placeholder="Image URL"
+                          value={imageUrl}
+                          onChange={(e) => setImageUrl(e.target.value)}
+                        /> {/* Changed to text input for URL */}
                         <button onClick={() => handleEditProject(project.id)}>
                           Save Changes
                         </button>
