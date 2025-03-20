@@ -683,13 +683,13 @@ export default function App() {
           </button>
         </section>
 
-        {/* Gallery section - Placeholder for now */}
+        {/* Gallery section - Placeholder for now 
         <section id="Gallery">
           <div>
             <h2 className="text-center text-2xl font-bold mb-4">Company Gallery</h2>
             <p className="text-center">Gallery images coming soon</p>
           </div>
-        </section>
+        </section>*/}
 
         <section id="contact" className="contact">
           <h2 data-aos="fade-up">Request Proposal</h2>
