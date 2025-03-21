@@ -597,6 +597,24 @@ export default function App() {
             {selectedService && (
               <div className="project-modal" onClick={() => setSelectedService(null)}>
                 <div className="project-modal-content" onClick={e => e.stopPropagation()}>
+                  <button className="project-modal-close" onClick={() => setSelectedService(null)}>×</button>
+                  <img
+                    src={selectedService.image || '/logoprecia.png'}
+                    alt={selectedService.title}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = '/logoprecia.png';
+                    }}
+                  />
+                  <h3>{selectedService.title}</h3>
+                  <p>{selectedService.description}</p>
+                </div>
+              </div>
+            )}
+
+            {selectedService && (
+              <div className="project-modal" onClick={() => setSelectedService(null)}>
+                <div className="project-modal-content" onClick={e => e.stopPropagation()}>
                   <button 
                     className="project-modal-close"
                     onClick={() => setSelectedService(null)}
