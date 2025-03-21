@@ -613,16 +613,18 @@ export default function App() {
                 <div className="modal-overlay" onClick={() => setSelectedService(null)}>
                   <div className="modal-content service-modal" onClick={e => e.stopPropagation()}>
                     <button className="modal-close" onClick={() => setSelectedService(null)}>×</button>
-                    <img
-                      src={selectedService.image || '/logoprecia.png'}
-                      alt={selectedService.title}
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = '/logoprecia.png';
-                      }}
-                    />
-                    <h3>{selectedService.title}</h3>
-                    <p>{selectedService.description}</p>
+                    <div className="modal-body">
+                      <img
+                        src={selectedService.image || '/logoprecia.png'}
+                        alt={selectedService.title}
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = '/logoprecia.png';
+                        }}
+                      />
+                      <h3>{selectedService.title}</h3>
+                      <p>{selectedService.description}</p>
+                    </div>
                   </div>
                 </div>
               )}
