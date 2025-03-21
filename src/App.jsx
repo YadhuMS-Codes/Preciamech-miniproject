@@ -575,9 +575,8 @@ export default function App() {
                     className={`project-card ${index === currentProjectIndex ? 'active' : ''}`}
                     data-aos="fade-up" 
                     data-aos-delay={(index % 3) * 100}
-                    onClick={() => setSelectedService(project)}
                   >
-                    <div className="project-image">
+                    <div className="project-image" onClick={() => setSelectedService(project)}>
                       <img
                         src={project.image || '/logoprecia.png'}
                         alt={project.title}
