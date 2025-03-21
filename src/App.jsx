@@ -391,12 +391,23 @@ export default function App() {
 
   // Functions to scroll services
   const navigateServices = (direction) => {
-    const scrollAmount = 300; // Width of a service card plus margins
+    const scrollAmount = 300;
     if (servicesRef.current) {
+      const maxScroll = servicesRef.current.scrollWidth - servicesRef.current.clientWidth;
+      const currentScroll = servicesRef.current.scrollLeft;
+      
       if (direction === 'next') {
-        servicesRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        if (currentScroll >= maxScroll) {
+          servicesRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          servicesRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
       } else {
-        servicesRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        if (currentScroll <= 0) {
+          servicesRef.current.scrollTo({ left: maxScroll, behavior: 'smooth' });
+        } else {
+          servicesRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        }
       }
     }
   };
@@ -573,7 +584,14 @@ export default function App() {
                     data-aos="fade-up" 
                     data-aos-delay={(index % 3) * 100}
                   >
-                    <div className="project-image" onClick={() => setSelectedService(project)}>
+                    <div className="project-image" onClick={(e) => {
+                      e.preventDefault();
+                      setSelectedService({
+                        image: project.image || '/logoprecia.png',
+                        title: project.title,
+                        description: project.description
+                      });
+                    }}>
                       <img
                         src={project.image || '/logoprecia.png'}
                         alt={project.title}
