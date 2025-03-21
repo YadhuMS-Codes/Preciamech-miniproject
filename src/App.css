@@ -224,14 +224,31 @@ section {
 
 .modal-content {
   background: white;
-  padding: 2rem;
-  border-radius: 15px;
-  max-width: 800px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 80%;
+  width: 600px;
   position: relative;
-  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.modal-content.service-modal img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.modal-content.service-modal h3 {
+  font-size: 24px;
+  margin: 10px 0;
+}
+
+.modal-content.service-modal p {
+  text-align: center;
+  line-height: 1.6;
 }
 
 .modal-close {

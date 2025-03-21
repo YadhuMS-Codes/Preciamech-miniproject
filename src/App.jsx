@@ -610,20 +610,18 @@ export default function App() {
 
             {selectedService && (
                 <div className="modal-overlay" onClick={() => setSelectedService(null)}>
-                  <div className="modal-content" onClick={e => e.stopPropagation()}>
+                  <div className="modal-content service-modal" onClick={e => e.stopPropagation()}>
                     <button className="modal-close" onClick={() => setSelectedService(null)}>×</button>
-                    <div className="modal-body">
-                      <img
-                        src={selectedService.image || '/logoprecia.png'}
-                        alt={selectedService.title}
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = '/logoprecia.png';
-                        }}
-                      />
-                      <h3>{selectedService.title}</h3>
-                      <p>{selectedService.description}</p>
-                    </div>
+                    <img
+                      src={selectedService.image || '/logoprecia.png'}
+                      alt={selectedService.title}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = '/logoprecia.png';
+                      }}
+                    />
+                    <h3>{selectedService.title}</h3>
+                    <p>{selectedService.description}</p>
                   </div>
                 </div>
               )}
@@ -637,25 +635,7 @@ export default function App() {
             </button>
           </div>
 
-          <div className="project-indicators">
-            {projects.map((_, index) => (
-              <button 
-                key={index}
-                className={`indicator ${index === currentProjectIndex ? 'active' : ''}`}
-                onClick={() => {
-                  setCurrentProjectIndex(index);
-                  if (projectsRef.current) {
-                    const scrollAmount = projectsRef.current.querySelector('.project-card').offsetWidth + 20;
-                    projectsRef.current.scrollTo({
-                      left: index * scrollAmount,
-                      behavior: 'smooth'
-                    });
-                  }
-                }}
-                aria-label={`Go to project ${index + 1}`}
-              />
-            ))}
-          </div>
+          
         </section>
 
         <section id="pic" className="pic">
