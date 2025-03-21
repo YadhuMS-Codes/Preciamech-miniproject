@@ -2,6 +2,7 @@
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 .admin-login {
@@ -79,7 +80,7 @@
   transform: translateY(-2px);
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   color: #ff9800;
-  background: ;
+  background:#2c3e50;
 }
 
 .project-card button {
