@@ -369,24 +369,25 @@ export default function App() {
 
   // Functions to scroll projects
   const navigateProjects = (direction) => {
-    setCurrentProjectIndex(prevIndex => {
-      let newIndex;
-      if (direction === 'next') {
-        newIndex = prevIndex < projects.length - 1 ? prevIndex + 1 : 0;
+    if (!projectsRef.current) return;
+    
+    const scrollAmount = projectsRef.current.querySelector('.project-card').offsetWidth + 20;
+    const maxScroll = projectsRef.current.scrollWidth - projectsRef.current.clientWidth;
+    const currentScroll = projectsRef.current.scrollLeft;
+
+    if (direction === 'next') {
+      if (currentScroll >= maxScroll) {
+        projectsRef.current.scrollTo({ left: 0, behavior: 'smooth' });
       } else {
-        newIndex = prevIndex > 0 ? prevIndex - 1 : projects.length - 1;
+        projectsRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
       }
-
-      if (projectsRef.current) {
-        const scrollAmount = projectsRef.current.querySelector('.project-card').offsetWidth + 20; // 20px for margin
-        projectsRef.current.scrollTo({
-          left: newIndex * scrollAmount,
-          behavior: 'smooth'
-        });
+    } else {
+      if (currentScroll <= 0) {
+        projectsRef.current.scrollTo({ left: maxScroll, behavior: 'smooth' });
+      } else {
+        projectsRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
       }
-
-      return newIndex;
-    });
+    }
   };
 
   // Functions to scroll services
