@@ -575,6 +575,7 @@ export default function App() {
                     className={`project-card ${index === currentProjectIndex ? 'active' : ''}`}
                     data-aos="fade-up" 
                     data-aos-delay={(index % 3) * 100}
+                    onClick={() => setSelectedService(project)}
                   >
                     <div className="project-image">
                       <img
@@ -586,13 +587,35 @@ export default function App() {
                           e.target.src = '/logoprecia.png';
                         }}
                       />
+                      <h3>{project.title}</h3>
                     </div>
-                    <h3>{project.title}</h3>
-                    <p className="project-description">{project.description}</p>
                   </div>
                 ))}
               </div>
             </div>
+
+            {selectedService && (
+              <div className="project-modal" onClick={() => setSelectedService(null)}>
+                <div className="project-modal-content" onClick={e => e.stopPropagation()}>
+                  <button 
+                    className="project-modal-close"
+                    onClick={() => setSelectedService(null)}
+                  >
+                    ×
+                  </button>
+                  <img
+                    src={selectedService.image || '/logoprecia.png'}
+                    alt={selectedService.title}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = '/logoprecia.png';
+                    }}
+                  />
+                  <h3>{selectedService.title}</h3>
+                  <p>{selectedService.description}</p>
+                </div>
+              </div>
+            )}
 
             <button 
               className="project-nav next" 
