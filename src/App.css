@@ -214,11 +214,11 @@ section {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 9999;
   padding: 2rem;
 }
 
@@ -226,11 +226,12 @@ section {
   background: white;
   padding: 2rem;
   border-radius: 15px;
-  max-width: 600px;
-  width: 100%;
+  max-width: 800px;
+  width: 90%;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
+  z-index: 10000;
 }
 
 .modal-close {
