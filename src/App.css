@@ -719,8 +719,8 @@ footer {
 }
 
 .project-nav {
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
+  background: #ffc176;
+  color: #2c3e50;
   border: none;
   border-radius: 50%;
   width: 40px;
@@ -732,32 +732,34 @@ footer {
   justify-content: center;
   margin: 0 10px;
   z-index: 10;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
 }
 
 .project-nav:hover {
-  background: rgba(0, 0, 0, 0.8);
+  background: #ffb057;
+  transform: scale(1.1);
 }
 
 .project-indicators {
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  gap: 8px;
 }
 
 .indicator {
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: #ccc;
-  margin: 0 5px;
+  background: rgba(255, 255, 255, 0.3);
   border: none;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
+  padding: 0;
 }
 
 .indicator.active {
-  background: #555;
+  background: #ffc176;
   transform: scale(1.2);
 }
 
