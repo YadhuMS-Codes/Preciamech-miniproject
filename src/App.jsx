@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import emailjs from '@emailjs/browser';
+import { collection, query, orderBy, getDocs } from 'firebase/firestore';
+import { db } from './firebaseConfig';
 import { useTranslation } from 'react-i18next';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -573,20 +575,17 @@ export default function App() {
                     className={`project-card ${index === currentProjectIndex ? 'active' : ''}`}
                     data-aos="fade-up" 
                     data-aos-delay={(index % 3) * 100}
-                    onClick={() => setSelectedService(project)}
                   >
                     <div className="project-image">
-                      {project.image && (
-                        <img
-                          src={project.image}
-                          alt={project.title}
-                          loading="lazy"
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = '/logoprecia.png';
-                          }}
-                        />
-                      )}
+                      <img
+                        src={project.image || '/logoprecia.png'}
+                        alt={project.title}
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = '/logoprecia.png';
+                        }}
+                      />
                     </div>
                     <h3>{project.title}</h3>
                     <p className="project-description">{project.description}</p>
