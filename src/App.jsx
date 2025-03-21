@@ -3,16 +3,13 @@ import { useNavigate } from "react-router-dom";
 import emailjs from '@emailjs/browser';
 import { collection, query, orderBy, getDocs } from 'firebase/firestore';
 import { db } from './firebaseConfig';
-import { useTranslation } from 'react-i18next';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import './i18n';
 import './App.css';
 //import ImageSlider from './ImageSlider'; // Removed import -  This import was likely causing the error.  The Gallery section needs to be handled differently.
 
 export default function App() {
    const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
   const [flippedCard, setFlippedCard] = useState(null);
   const [selectedService, setSelectedService] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -799,19 +796,10 @@ export default function App() {
           <div className="nav-links">
             <a href="/admin" onClick={() => navigate('/admin')}>
               Admin Login</a>
-            <a href="#home">{t("nav.home")}</a>
-            <a href="#services">{t("nav.services")}</a>
-            <a href="#projects">{t("nav.projects")}</a>
-            <a href="#contact">{t("nav.contact")}</a>
-            <select
-              className="language-select"
-              value={i18n.language}
-              onChange={(e) => i18n.changeLanguage(e.target.value)}
-            >
-              <option value="en">English</option>
-              <option value="es">Español</option>
-              <option value="hi">हिंदी</option>
-            </select>
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
           </div>
         </nav>
       )}
