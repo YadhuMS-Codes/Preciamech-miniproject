@@ -573,20 +573,23 @@ export default function App() {
                     className={`project-card ${index === currentProjectIndex ? 'active' : ''}`}
                     data-aos="fade-up" 
                     data-aos-delay={(index % 3) * 100}
+                    onClick={() => setSelectedService(project)}
                   >
-                    {project.image && (
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        loading="lazy"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = '/logoprecia.png'; // Fallback image
-                        }}
-                      />
-                    )}
+                    <div className="project-image">
+                      {project.image && (
+                        <img
+                          src={project.image}
+                          alt={project.title}
+                          loading="lazy"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = '/logoprecia.png';
+                          }}
+                        />
+                      )}
+                    </div>
                     <h3>{project.title}</h3>
-                    <p>{project.description}</p>
+                    <p className="project-description">{project.description}</p>
                   </div>
                 ))}
               </div>
