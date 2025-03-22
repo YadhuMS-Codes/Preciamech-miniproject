@@ -375,18 +375,42 @@ export default function App() {
     const maxScroll = projectsRef.current.scrollWidth - projectsRef.current.clientWidth;
     const currentScroll = projectsRef.current.scrollLeft;
 
+    const duration = 500;
+    const start = currentScroll;
+    const startTime = performance.now();
+
     if (direction === 'next') {
-      if (currentScroll >= maxScroll) {
-        projectsRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        projectsRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      }
+      const target = currentScroll >= maxScroll ? 0 : Math.min(currentScroll + scrollAmount, maxScroll);
+      
+      const animate = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        
+        const newPosition = start + (target - start) * ease;
+        projectsRef.current.scrollLeft = newPosition;
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+      requestAnimationFrame(animate);
     } else {
-      if (currentScroll <= 0) {
-        projectsRef.current.scrollTo({ left: maxScroll, behavior: 'smooth' });
-      } else {
-        projectsRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-      }
+      const target = currentScroll <= 0 ? maxScroll : Math.max(currentScroll - scrollAmount, 0);
+      
+      const animate = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        
+        const newPosition = start + (target - start) * ease;
+        projectsRef.current.scrollLeft = newPosition;
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+      requestAnimationFrame(animate);
     }
   };
 
@@ -397,18 +421,42 @@ export default function App() {
       const maxScroll = servicesRef.current.scrollWidth - servicesRef.current.clientWidth;
       const currentScroll = servicesRef.current.scrollLeft;
 
+      const duration = 500;
+      const start = currentScroll;
+      const startTime = performance.now();
+
       if (direction === 'next') {
-        if (currentScroll >= maxScroll) {
-          servicesRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          servicesRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-        }
+        const target = currentScroll >= maxScroll ? 0 : Math.min(currentScroll + scrollAmount, maxScroll);
+        
+        const animate = (currentTime) => {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+          
+          const newPosition = start + (target - start) * ease;
+          servicesRef.current.scrollLeft = newPosition;
+          
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          }
+        };
+        requestAnimationFrame(animate);
       } else {
-        if (currentScroll <= 0) {
-          servicesRef.current.scrollTo({ left: maxScroll, behavior: 'smooth' });
-        } else {
-          servicesRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-        }
+        const target = currentScroll <= 0 ? maxScroll : Math.max(currentScroll - scrollAmount, 0);
+        
+        const animate = (currentTime) => {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+          
+          const newPosition = start + (target - start) * ease;
+          servicesRef.current.scrollLeft = newPosition;
+          
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          }
+        };
+        requestAnimationFrame(animate);
       }
     }
   };

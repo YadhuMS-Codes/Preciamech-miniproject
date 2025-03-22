@@ -656,13 +656,13 @@ footer {
 }
 
 .service-scroll-btn {
-  background: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(145deg, #34495e, #2c3e50);
   color: white;
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 18px;
+  width: 50px;
+  height: 50px;
+  font-size: 22px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -671,11 +671,18 @@ footer {
   top: 50%;
   transform: translateY(-50%);
   z-index: 10;
-  transition: background 0.3s;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(44, 62, 80, 0.3);
 }
 
 .service-scroll-btn:hover {
-  background: rgba(0, 0, 0, 0.8);
+  background: linear-gradient(145deg, #2c3e50, #243342);
+  transform: translateY(-50%) scale(1.15) rotate(5deg);
+  box-shadow: 0 6px 20px rgba(44, 62, 80, 0.4);
+}
+
+.service-scroll-btn:active {
+  transform: translateY(-50%) scale(0.95);
 }
 
 .prev-btn {
@@ -826,25 +833,31 @@ footer {
 }
 
 .project-nav {
-  background: #ffc176;
+  background: linear-gradient(145deg, #ffd196, #ffa857);
   color: #2c3e50;
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 18px;
+  width: 50px;
+  height: 50px;
+  font-size: 22px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 10px;
+  margin: 0 15px;
   z-index: 10;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(255, 163, 72, 0.3);
 }
 
 .project-nav:hover {
-  background: #ffb057;
-  transform: scale(1.1);
+  background: linear-gradient(145deg, #ffa857, #ff9837);
+  transform: scale(1.15) rotate(5deg);
+  box-shadow: 0 6px 20px rgba(255, 163, 72, 0.4);
+}
+
+.project-nav:active {
+  transform: scale(0.95);
 }
 
 .project-indicators {
