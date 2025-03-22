@@ -587,11 +587,11 @@ export default function App() {
                   >
                     <div className="project-image" onClick={(e) => {
                       e.preventDefault();
-                      if (project) {
+                      if (project && typeof project === 'object') {
                         setSelectedService({
-                          image: project.image || '/logoprecia.png',
-                          title: project.title || 'Project',
-                          description: project.description || 'No description available'
+                          image: project?.image || '/logoprecia.png',
+                          title: project?.title || 'Untitled Project',
+                          description: project?.description || 'No description available'
                         });
                       }
                     }}>
@@ -604,7 +604,7 @@ export default function App() {
                           e.target.src = '/logoprecia.png';
                         }}
                       />
-                      <h3>{project.title}</h3>
+                      <h3>{project?.title || 'Untitled Project'}</h3>
                     </div>
                   </div>
                 ))}
