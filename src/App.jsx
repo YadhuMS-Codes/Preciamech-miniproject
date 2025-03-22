@@ -370,47 +370,54 @@ export default function App() {
   // Functions to scroll projects
   const navigateProjects = (direction) => {
     if (!projectsRef.current) return;
-
-    const scrollAmount = projectsRef.current.querySelector('.project-card').offsetWidth + 20;
-    const maxScroll = projectsRef.current.scrollWidth - projectsRef.current.clientWidth;
-    const currentScroll = projectsRef.current.scrollLeft;
-
-    const duration = 500;
-    const start = currentScroll;
-    const startTime = performance.now();
+    
+    const cards = projectsRef.current.querySelectorAll('.project-card');
+    const cardWidth = cards[0].offsetWidth + 20; // Including margin
+    const containerWidth = projectsRef.current.clientWidth;
+    const maxScroll = projectsRef.current.scrollWidth - containerWidth;
+    let currentScroll = projectsRef.current.scrollLeft;
 
     if (direction === 'next') {
-      const target = currentScroll >= maxScroll ? 0 : Math.min(currentScroll + scrollAmount, maxScroll);
-      
-      const animate = (currentTime) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      if (currentScroll >= maxScroll) {
+        // Reset to start with animation
+        cards.forEach(card => {
+          const clone = card.cloneNode(true);
+          projectsRef.current.appendChild(clone);
+        });
         
-        const newPosition = start + (target - start) * ease;
-        projectsRef.current.scrollLeft = newPosition;
-        
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        }
-      };
-      requestAnimationFrame(animate);
+        setTimeout(() => {
+          projectsRef.current.style.transition = 'none';
+          projectsRef.current.scrollLeft = 0;
+          // Remove cloned cards
+          cards.forEach(card => {
+            if (card.classList.contains('cloned')) {
+              card.remove();
+            }
+          });
+          projectsRef.current.style.transition = 'transform 0.5s ease';
+        }, 500);
+      }
+      projectsRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' });
     } else {
-      const target = currentScroll <= 0 ? maxScroll : Math.max(currentScroll - scrollAmount, 0);
-      
-      const animate = (currentTime) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      if (currentScroll <= 0) {
+        // Add cards to the start
+        Array.from(cards).reverse().forEach(card => {
+          const clone = card.cloneNode(true);
+          clone.classList.add('cloned');
+          projectsRef.current.insertBefore(clone, projectsRef.current.firstChild);
+        });
+        projectsRef.current.scrollLeft = projectsRef.current.scrollWidth;
         
-        const newPosition = start + (target - start) * ease;
-        projectsRef.current.scrollLeft = newPosition;
-        
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        }
-      };
-      requestAnimationFrame(animate);
+        setTimeout(() => {
+          projectsRef.current.style.transition = 'none';
+          // Remove cloned cards
+          const clonedCards = projectsRef.current.querySelectorAll('.cloned');
+          clonedCards.forEach(card => card.remove());
+          projectsRef.current.scrollLeft = maxScroll;
+          projectsRef.current.style.transition = 'transform 0.5s ease';
+        }, 500);
+      }
+      projectsRef.current.scrollBy({ left: -cardWidth, behavior: 'smooth' });
     }
   };
 

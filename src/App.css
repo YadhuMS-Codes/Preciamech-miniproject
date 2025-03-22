@@ -715,10 +715,10 @@ footer {
 
 .project-slider {
   display: flex;
-  scroll-behavior: smooth;
   overflow-x: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
+  transition: transform 0.5s ease;
 }
 
 .project-slider::-webkit-scrollbar {
@@ -833,7 +833,7 @@ footer {
 }
 
 .project-nav {
-  background: linear-gradient(145deg, #ffd196, #ffa857);
+  background: #ffa857;
   color: #2c3e50;
   border: none;
   border-radius: 50%;
@@ -846,18 +846,6 @@ footer {
   justify-content: center;
   margin: 0 15px;
   z-index: 10;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 4px 15px rgba(255, 163, 72, 0.3);
-}
-
-.project-nav:hover {
-  background: linear-gradient(145deg, #ffa857, #ff9837);
-  transform: scale(1.15) rotate(5deg);
-  box-shadow: 0 6px 20px rgba(255, 163, 72, 0.4);
-}
-
-.project-nav:active {
-  transform: scale(0.95);
 }
 
 .project-indicators {
