@@ -423,48 +423,51 @@ export default function App() {
 
   // Functions to scroll services
   const navigateServices = (direction) => {
-    const scrollAmount = 300;
-    if (servicesRef.current) {
-      const maxScroll = servicesRef.current.scrollWidth - servicesRef.current.clientWidth;
-      const currentScroll = servicesRef.current.scrollLeft;
+    if (!servicesRef.current) return;
+    
+    const cards = servicesRef.current.querySelectorAll('.service-card');
+    const cardWidth = cards[0].offsetWidth + 20;
+    const containerWidth = servicesRef.current.clientWidth;
+    const maxScroll = servicesRef.current.scrollWidth - containerWidth;
+    let currentScroll = servicesRef.current.scrollLeft;
 
-      const duration = 500;
-      const start = currentScroll;
-      const startTime = performance.now();
-
-      if (direction === 'next') {
-        const target = currentScroll >= maxScroll ? 0 : Math.min(currentScroll + scrollAmount, maxScroll);
+    if (direction === 'next') {
+      if (currentScroll >= maxScroll) {
+        cards.forEach(card => {
+          const clone = card.cloneNode(true);
+          servicesRef.current.appendChild(clone);
+        });
         
-        const animate = (currentTime) => {
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-          
-          const newPosition = start + (target - start) * ease;
-          servicesRef.current.scrollLeft = newPosition;
-          
-          if (progress < 1) {
-            requestAnimationFrame(animate);
-          }
-        };
-        requestAnimationFrame(animate);
-      } else {
-        const target = currentScroll <= 0 ? maxScroll : Math.max(currentScroll - scrollAmount, 0);
-        
-        const animate = (currentTime) => {
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-          
-          const newPosition = start + (target - start) * ease;
-          servicesRef.current.scrollLeft = newPosition;
-          
-          if (progress < 1) {
-            requestAnimationFrame(animate);
-          }
-        };
-        requestAnimationFrame(animate);
+        setTimeout(() => {
+          servicesRef.current.style.transition = 'none';
+          servicesRef.current.scrollLeft = 0;
+          cards.forEach(card => {
+            if (card.classList.contains('cloned')) {
+              card.remove();
+            }
+          });
+          servicesRef.current.style.transition = 'transform 0.5s ease';
+        }, 500);
       }
+      servicesRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' });
+    } else {
+      if (currentScroll <= 0) {
+        Array.from(cards).reverse().forEach(card => {
+          const clone = card.cloneNode(true);
+          clone.classList.add('cloned');
+          servicesRef.current.insertBefore(clone, servicesRef.current.firstChild);
+        });
+        servicesRef.current.scrollLeft = servicesRef.current.scrollWidth;
+        
+        setTimeout(() => {
+          servicesRef.current.style.transition = 'none';
+          const clonedCards = servicesRef.current.querySelectorAll('.cloned');
+          clonedCards.forEach(card => card.remove());
+          servicesRef.current.scrollLeft = maxScroll;
+          servicesRef.current.style.transition = 'transform 0.5s ease';
+        }, 500);
+      }
+      servicesRef.current.scrollBy({ left: -cardWidth, behavior: 'smooth' });
     }
   };
 
