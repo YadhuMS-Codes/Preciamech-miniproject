@@ -1,0 +1,25 @@
+[vite] connecting...
+[vite] connected.
+Cannot read properties of undefined (reading 'title')
+Cannot read properties of undefined (reading 'title')
+The above error occurred in the <App> component:
+
+    at App (https://b6452c52-7c16-4022-ad85-d19d03a8e288-00-mbzqfan4ypgv.sisko.replit.dev:3000/src/App.jsx:28:20)
+    at RenderedRoute (https://b6452c52-7c16-4022-ad85-d19d03a8e288-00-mbzqfan4ypgv.sisko.replit.dev:3000/node_modules/.vite/deps/react-router-dom.js?v=f691f72f:5713:26)
+    at Routes (https://b6452c52-7c16-4022-ad85-d19d03a8e288-00-mbzqfan4ypgv.sisko.replit.dev:3000/node_modules/.vite/deps/react-router-dom.js?v=f691f72f:6444:3)
+    at Router (https://b6452c52-7c16-4022-ad85-d19d03a8e288-00-mbzqfan4ypgv.sisko.replit.dev:3000/node_modules/.vite/deps/react-router-dom.js?v=f691f72f:6387:13)
+    at BrowserRouter (https://b6452c52-7c16-4022-ad85-d19d03a8e288-00-mbzqfan4ypgv.sisko.replit.dev:3000/node_modules/.vite/deps/react-router-dom.js?v=f691f72f:8612:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+Cannot read properties of undefined (reading 'title')
+at renderContent (https://b6452c52-7c16-4022-ad85-d19d03a8e288-00-mbzqfan4ypgv.sisko.replit.dev:3000/src/App.jsx:678:80)
+at App (https://b6452c52-7c16-4022-ad85-d19d03a8e288-00-mbzqfan4ypgv.sisko.replit.dev:3000/src/App.jsx:1267:5)
+at renderWithHooks (https://b6452c52-7c16-4022-ad85-d19d03a8e288-00-mbzqfan4ypgv.sisko.replit.dev:3000/node_modules/.vite/deps/chunk-3VFEIWTT.js?v=f691f72f:12199:26)
+at updateFunctionComponent (https://b6452c52-7c16-4022-ad85-d19d03a8e288-00-mbzqfan4ypgv.sisko.replit.dev:3000/node_modules/.vite/deps/chunk-3VFEIWTT.js?v=f691f72f:14605:28)
+at beginWork (https://b6452c52-7c16-4022-ad85-d19d03a8e288-00-mbzqfan4ypgv.sisko.replit.dev:3000/node_modules/.vite/deps/chunk-3VFEIWTT.js?v=f691f72f:15940:22)
+at beginWork$1 (https://b6452c52-7c16-4022-ad85-d19d03a8e288-00-mbzqfan4ypgv.sisko.replit.dev:3000/node_modules/.vite/deps/chunk-3VFEIWTT.js?v=f691f72f:19774:22)
+at performUnitOfWork (https://b6452c52-7c16-4022-ad85-d19d03a8e288-00-mbzqfan4ypgv.sisko.replit.dev:3000/node_modules/.vite/deps/chunk-3VFEIWTT.js?v=f691f72f:19219:20)
+at workLoopSync (https://b6452c52-7c16-4022-ad85-d19d03a8e288-00-mbzqfan4ypgv.sisko.replit.dev:3000/node_modules/.vite/deps/chunk-3VFEIWTT.js?v=f691f72f:19158:13)
+at renderRootSync (https://b6452c52-7c16-4022-ad85-d19d03a8e288-00-mbzqfan4ypgv.sisko.replit.dev:3000/node_modules/.vite/deps/chunk-3VFEIWTT.js?v=f691f72f:19137:15)
+at recoverFromConcurrentError (https://b6452c52-7c16-4022-ad85-d19d03a8e288-00-mbzqfan4ypgv.sisko.replit.dev:3000/node_modules/.vite/deps/chunk-3VFEIWTT.js?v=f691f72f:18754:28)
