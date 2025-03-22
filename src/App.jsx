@@ -370,7 +370,7 @@ export default function App() {
   // Functions to scroll projects
   const navigateProjects = (direction) => {
     if (!projectsRef.current) return;
-    
+
     const scrollAmount = projectsRef.current.querySelector('.project-card').offsetWidth + 20;
     const maxScroll = projectsRef.current.scrollWidth - projectsRef.current.clientWidth;
     const currentScroll = projectsRef.current.scrollLeft;
@@ -396,7 +396,7 @@ export default function App() {
     if (servicesRef.current) {
       const maxScroll = servicesRef.current.scrollWidth - servicesRef.current.clientWidth;
       const currentScroll = servicesRef.current.scrollLeft;
-      
+
       if (direction === 'next') {
         if (currentScroll >= maxScroll) {
           servicesRef.current.scrollTo({ left: 0, behavior: 'smooth' });
@@ -640,7 +640,7 @@ export default function App() {
             </button>
           </div>
 
-          
+
         </section>
 
         <section id="pic" className="pic">
