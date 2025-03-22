@@ -587,11 +587,13 @@ export default function App() {
                   >
                     <div className="project-image" onClick={(e) => {
                       e.preventDefault();
-                      setSelectedService({
-                        image: project.image || '/logoprecia.png',
-                        title: project.title,
-                        description: project.description
-                      });
+                      if (project) {
+                        setSelectedService({
+                          image: project.image || '/logoprecia.png',
+                          title: project.title || 'Project',
+                          description: project.description || 'No description available'
+                        });
+                      }
                     }}>
                       <img
                         src={project.image || '/logoprecia.png'}
