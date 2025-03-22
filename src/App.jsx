@@ -585,16 +585,7 @@ export default function App() {
                     data-aos="fade-up" 
                     data-aos-delay={(index % 3) * 100}
                   >
-                    <div className="project-image" onClick={(e) => {
-                      e.preventDefault();
-                      if (project && typeof project === 'object') {
-                        setSelectedService({
-                          image: project?.image || '/logoprecia.png',
-                          title: project?.title || 'Untitled Project',
-                          description: project?.description || 'No description available'
-                        });
-                      }
-                    }}>
+                    <div className="project-image">
                       <img
                         src={project.image || '/logoprecia.png'}
                         alt={project.title}
@@ -611,25 +602,7 @@ export default function App() {
               </div>
             </div>
 
-            {selectedService && (
-                <div className="modal-overlay" onClick={() => setSelectedService(null)}>
-                  <div className="modal-content service-modal" onClick={e => e.stopPropagation()}>
-                    <button className="modal-close" onClick={() => setSelectedService(null)}>×</button>
-                    <div className="modal-body">
-                      <img
-                        src={selectedService.image || '/logoprecia.png'}
-                        alt={selectedService.title}
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = '/logoprecia.png';
-                        }}
-                      />
-                      <h3>{selectedService.title}</h3>
-                      <p>{selectedService.description}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
+            
 
             <button 
               className="project-nav next" 
