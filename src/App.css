@@ -676,13 +676,7 @@ footer {
 }
 
 .service-scroll-btn:hover {
-  background: linear-gradient(145deg, #2c3e50, #243342);
-  transform: translateY(-50%) scale(1.15) rotate(5deg);
-  box-shadow: 0 6px 20px rgba(44, 62, 80, 0.4);
-}
-
-.service-scroll-btn:active {
-  transform: translateY(-50%) scale(0.95);
+  background: #2c3e50;
 }
 
 .prev-btn {

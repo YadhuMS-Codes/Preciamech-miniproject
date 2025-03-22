@@ -433,41 +433,20 @@ export default function App() {
 
     if (direction === 'next') {
       if (currentScroll >= maxScroll) {
-        cards.forEach(card => {
-          const clone = card.cloneNode(true);
-          servicesRef.current.appendChild(clone);
-        });
-        
-        setTimeout(() => {
-          servicesRef.current.style.transition = 'none';
-          servicesRef.current.scrollLeft = 0;
-          cards.forEach(card => {
-            if (card.classList.contains('cloned')) {
-              card.remove();
-            }
-          });
-          servicesRef.current.style.transition = 'transform 0.5s ease';
-        }, 500);
+        // Move all cards to the beginning with animation
+        servicesRef.current.style.transition = 'transform 0.5s ease';
+        servicesRef.current.scrollLeft = 0;
+      } else {
+        servicesRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' });
       }
-      servicesRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' });
     } else {
       if (currentScroll <= 0) {
-        Array.from(cards).reverse().forEach(card => {
-          const clone = card.cloneNode(true);
-          clone.classList.add('cloned');
-          servicesRef.current.insertBefore(clone, servicesRef.current.firstChild);
-        });
-        servicesRef.current.scrollLeft = servicesRef.current.scrollWidth;
-        
-        setTimeout(() => {
-          servicesRef.current.style.transition = 'none';
-          const clonedCards = servicesRef.current.querySelectorAll('.cloned');
-          clonedCards.forEach(card => card.remove());
-          servicesRef.current.scrollLeft = maxScroll;
-          servicesRef.current.style.transition = 'transform 0.5s ease';
-        }, 500);
+        // Move to the end with animation
+        servicesRef.current.style.transition = 'transform 0.5s ease';
+        servicesRef.current.scrollLeft = maxScroll;
+      } else {
+        servicesRef.current.scrollBy({ left: -cardWidth, behavior: 'smooth' });
       }
-      servicesRef.current.scrollBy({ left: -cardWidth, behavior: 'smooth' });
     }
   };
 
