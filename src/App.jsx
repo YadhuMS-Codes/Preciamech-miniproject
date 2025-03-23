@@ -849,45 +849,49 @@ export default function App() {
       {renderContent()}
 
       {currentPage === 'home' && (
-      <footer className="bg-[#112240] text-white py-10">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-8">
-            {/* Left Side - Logo & Description */}
-            <div className="text-center md:text-left">
+      <footer className="bg-[#0a192f] text-white py-12">
+        <div className="container mx-auto px-6 md:px-12">
+          {/* Footer Content */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+
+            {/* Logo & Description */}
+            <div>
               <div className="flex items-center justify-center md:justify-start space-x-3">
-                <img src="/logoprecia.png" alt="PreciaMech Logo" className="w-12 h-12" />
+                <img src="/logoprecia.png" alt="PreciaMech Logo" className="w-14 h-14" />
                 <h2 className="text-2xl font-bold">PRECIAMECH</h2>
               </div>
-              <p className="mt-3 text-gray-300">Great Value Engineering Service Provider</p>
+              <p className="mt-3 text-gray-400">Great Value Engineering Service Provider</p>
             </div>
 
             {/* Quick Links */}
-            <div className="flex flex-col items-center md:items-start">
-              <h4 className="text-lg font-semibold text-orange-400 mb-3">Quick Links</h4>
+            <div>
+              <h4 className="text-lg font-semibold text-orange-400 mb-4">Quick Links</h4>
               <ul className="space-y-2 text-gray-300">
-                <li><a href="#home" className="hover:text-orange-400 transition">Home</a></li>
-                <li><a href="#services" className="hover:text-orange-400 transition">Services</a></li>
-                <li><a href="#projects" className="hover:text-orange-400 transition">Projects</a></li>
-                <li><a href="#about" className="hover:text-orange-400 transition">About Us</a></li>
-                <li><a href="#contact" className="hover:text-orange-400 transition">Contact</a></li>
+                <li><a href="#home" className="hover:text-orange-400 transition">🏠 Home</a></li>
+                <li><a href="#services" className="hover:text-orange-400 transition">⚙️ Services</a></li>
+                <li><a href="#projects" className="hover:text-orange-400 transition">📂 Projects</a></li>
+                <li><a href="#about" className="hover:text-orange-400 transition">📖 About Us</a></li>
+                <li><a href="#contact" className="hover:text-orange-400 transition">📞 Contact</a></li>
               </ul>
             </div>
 
-            {/* Contact Info */}
-            <div className="flex flex-col items-center md:items-start">
-              <h4 className="text-lg font-semibold text-orange-400 mb-3">Contact Us</h4>
-              <p className="text-gray-300">📧 info@preciamech.com</p>
+            {/* Contact Information */}
+            <div>
+              <h4 className="text-lg font-semibold text-orange-400 mb-4">Contact Us</h4>
+              <p className="text-gray-300">📧 <a href="mailto:info@preciamech.com" className="hover:text-orange-400 transition">info@preciamech.com</a></p>
               <p className="text-gray-300">📞 +91 9867XXXXXX</p>
               <p className="text-gray-300">📍 Mumbai, India</p>
             </div>
+
           </div>
 
           {/* Footer Bottom */}
-          <div className="border-t border-gray-600 mt-8 pt-4 text-center text-gray-400 text-sm">
+          <div className="border-t border-gray-700 mt-10 pt-6 text-center text-gray-400 text-sm">
             &copy; 2025 Preciamech Consultants. All rights reserved.
           </div>
         </div>
       </footer>
+
       )}
     </div>
   );
