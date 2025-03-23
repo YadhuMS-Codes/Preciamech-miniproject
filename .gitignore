@@ -78,7 +78,6 @@ web_modules/
 .env.test.local
 .env.production.local
 .env.local
-.env*.local
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -94,7 +93,6 @@ dist
 
 # Gatsby files
 .cache/
-
 # Comment in the public line in if your project uses Gatsby and not Next.js
 # https://nextjs.org/blog/next-9-1#public-directory-support
 # public
@@ -130,63 +128,3 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-
-# Dependencies
-node_modules/
-.pnp/
-.pnp.js
-
-# Testing
-coverage/
-.nyc_output/
-
-# Production
-build/
-dist/
-out/
-
-# Environment Variables & Credentials
-.env
-.env.local
-.env.*.local
-.env.development
-.env.test
-.env.production
-firebase-config.js
-firebaseConfig.js
-**/firebase*.json
-serviceAccount*.json
-
-# IDE & Editor files
-.idea/
-.vscode/
-*.swp
-*.swo
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Debug logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-debug.log
-*.log
-
-# Runtime data
-pids/
-*.pid
-*.seed
-*.pid.lock
-
-# Cache directories
-.cache/
-.eslintcache
-.parcel-cache/
-
-# Compiled output
-*.compiled.js
-*.compiled.js.map
-*.min.js

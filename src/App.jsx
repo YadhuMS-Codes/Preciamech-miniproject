@@ -494,10 +494,10 @@ export default function App() {
 
     try {
       const result = await emailjs.send(
-        process.env.EMAILJS_SERVICE_ID,
-        process.env.EMAILJS_TEMPLATE_ID,
+        "service_yrwqlun", // Replace with your EmailJS service ID
+        "template_v0t030p", // Replace with your EmailJS template ID
         formData,
-        process.env.EMAILJS_PUBLIC_KEY
+        "a3-PM_cyuqyXkuJQr", // Replace with your EmailJS public key
       );
 
       setSubmitSuccess(true);
@@ -842,7 +842,6 @@ export default function App() {
             <a href="#services" onClick={() => setMobileMenuOpen(false)}>Services</a>
             <a href="#projects" onClick={() => setMobileMenuOpen(false)}>Projects</a>
             <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
-            <a href="#about" onClick={() => setMobileMenuOpen(false)}>About Us</a>
           </div>
         </nav>
       )}
@@ -850,49 +849,36 @@ export default function App() {
       {renderContent()}
 
       {currentPage === 'home' && (
-      <footer className="bg-[#0a192f] text-white py-12">
-        <div className="container mx-auto px-6 md:px-12">
-          {/* Footer Content */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-
-            {/* Logo & Description */}
-            <div>
-              <div className="flex items-center justify-center md:justify-start space-x-3">
-                <img src="/logoprecia.png" alt="PreciaMech Logo" className="w-14 h-14" />
-                <h2 className="text-2xl font-bold">PRECIAMECH</h2>
+        <footer className="main-footer">
+          <div className="footer-content">
+            <div className="footer-info">
+              <div className="footer-logo">
+                <img src="/logoprecia.png" alt="PreciaMech Logo" className="footer-logo-image" />
+                <div>PRECIAMECH</div>
               </div>
-              <p className="mt-3 text-gray-400">Great Value Engineering Service Provider</p>
+              <p>Great Value Engineering Service Provider</p>
             </div>
-
-            {/* Quick Links */}
-            <div>
-              <h4 className="text-lg font-semibold text-orange-400 mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-gray-300">
-                <li><a href="#home" className="hover:text-orange-400 transition">🏠 Home</a></li>
-                <li><a href="#services" className="hover:text-orange-400 transition">⚙️ Services</a></li>
-                <li><a href="#projects" className="hover:text-orange-400 transition">📂 Projects</a></li>
-                <li><a href="#about" className="hover:text-orange-400 transition">📖 About Us</a></li>
-                <li><a href="#contact" className="hover:text-orange-400 transition">📞 Contact</a></li>
-              </ul>
+            <div className="footer-links">
+              <div className="footer-column">
+                <h4>Quick Links</h4>
+                <a href="#home">Home</a>
+                <a href="#services">Services</a>
+                <a href="#projects">Projects</a>
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+              </div>
+              <div className="footer-column">
+                <h4>Contact Us</h4>
+                <p>Email: info@preciamech.com</p>
+                <p>Phone: +91 9867XXXXXX</p>
+                <p>Location: Mumbai, India</p>
+              </div>
             </div>
-
-            {/* Contact Information */}
-            <div>
-              <h4 className="text-lg font-semibold text-orange-400 mb-4">Contact Us</h4>
-              <p className="text-gray-300">📧 <a href="mailto:info@preciamech.com" className="hover:text-orange-400 transition">info@preciamech.com</a></p>
-              <p className="text-gray-300">📞 +91 9867XXXXXX</p>
-              <p className="text-gray-300">📍 Mumbai, India</p>
-            </div>
-
           </div>
-
-          {/* Footer Bottom */}
-          <div className="border-t border-gray-700 mt-10 pt-6 text-center text-gray-400 text-sm">
-            &copy; 2025 Preciamech Consultants. All rights reserved.
+          <div className="copyright">
+            <p>&copy; 2025 Preciamech Consultants. All rights reserved.</p>
           </div>
-        </div>
-      </footer>
-
+        </footer>
       )}
     </div>
   );

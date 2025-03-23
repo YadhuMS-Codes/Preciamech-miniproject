@@ -43,57 +43,31 @@
 
 @media (max-width: 768px) {
   .admin-page {
-    padding: 0.5rem;
+    padding: 1rem;
   }
 
   .admin-login {
     max-width: 100%;
-    margin: 0.5rem auto;
+    margin: 1rem auto;
     padding: 1rem;
   }
 
   .admin-header {
     flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .admin-sections {
     gap: 1rem;
-  }
-
-  .question-card, .project-card {
-    padding: 0.75rem;
-    margin-bottom: 0.75rem;
   }
 
   .project-card img {
     max-width: 100%;
-    height: auto;
   }
 
   .admin-page button {
     width: 100%;
-    margin: 3px 0;
-    padding: 8px 16px;
-    font-size: 14px;
+    margin: 5px 0;
   }
 
   .image-preview img {
     max-width: 100%;
-  }
-
-  input, textarea {
-    width: 100%;
-    font-size: 14px;
-    padding: 8px;
-  }
-
-  .admin-dashboard {
-    padding: 1rem;
-  }
-
-  .question-card textarea {
-    min-height: 80px;
   }
 }
 
