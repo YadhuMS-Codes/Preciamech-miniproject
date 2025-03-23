@@ -502,7 +502,7 @@ export default function App() {
       );
 
       setSubmitSuccess(true);
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ name: "", email: "", message: "", subject: "" });
       setTimeout(() => setSubmitSuccess(null), 5000);
     } catch (error) {
       setSubmitSuccess(false);
