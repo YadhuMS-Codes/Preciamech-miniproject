@@ -963,23 +963,32 @@ footer {
   color: #666;
 }
 
+.project-modal {
+  max-width: 800px;
+  width: 90%;
+  max-height: 90vh;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  overflow-y: auto;
+}
+
 .project-modal img {
-  width: 100%;
+  max-width: 100%;
   height: auto;
-  max-height: 60vh;
-  object-fit: contain;
-  border-radius: 4px;
   margin-bottom: 15px;
 }
 
 .project-modal h3 {
-  color: #2c3e50;
-  margin-bottom: 10px;
+  margin: 10px 0;
+  font-size: 1.5rem;
 }
 
 .project-modal p {
-  color: #666;
+  margin: 10px 0;
   line-height: 1.6;
+  word-wrap: break-word;
 }
 
 .project-modal-close {
