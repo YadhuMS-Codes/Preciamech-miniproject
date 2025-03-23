@@ -1,3 +1,4 @@
+
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
@@ -18,13 +19,16 @@ const storage = getStorage(app);
 
 const authenticateAdmin = async (username, password) => {
   try {
+    console.log("Attempting to authenticate admin:", username);
     const adminQuery = query(
-      collection(db, "admins"), 
+      collection(db, "admins"),
       where("username", "==", username),
       where("password", "==", password)
     );
-    const snapshot = await getDocs(adminQuery);
-    return !snapshot.empty;
+    
+    const querySnapshot = await getDocs(adminQuery);
+    console.log("Query result:", !querySnapshot.empty);
+    return !querySnapshot.empty;
   } catch (error) {
     console.error("Authentication error:", error);
     return false;
