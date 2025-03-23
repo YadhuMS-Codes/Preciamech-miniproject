@@ -41,6 +41,7 @@ export default function App() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    subject: "",
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -774,6 +775,14 @@ export default function App() {
                 name="email"
                 placeholder="Email"
                 value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="text"
+                name="subject"
+                placeholder="Subject"
+                value={formData.subject}
                 onChange={handleInputChange}
                 required
               />
