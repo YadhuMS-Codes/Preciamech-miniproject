@@ -803,35 +803,6 @@ footer {
   }
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
-  .service-card, .project-card {
-    min-width: 280px;
-  }
-
-  .hero1 {
-    font-size: 3rem;
-  }
-
-  .hero h1 {
-    font-size: 2.5rem;
-  }
-
-  section {
-    padding: 4rem 2rem;
-  }
-
-  .service-grid, .project-slider {
-    gap: 1.5rem;
-  }
-}
-
-  .nav-links.active {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-
   .nav-links a {
     margin: 0;
     padding: 0.8rem;
@@ -932,7 +903,6 @@ footer {
     cursor: pointer;
     padding: 0.5rem;
   }
-
 
 @media (max-width: 480px) {
   .hero1 {
@@ -1161,7 +1131,7 @@ footer {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255,0.9);
   border: none;
   color: #2c3e50;
   font-size: 24px;
