@@ -3,9 +3,10 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { getAnalytics } from "firebase/analytics";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
-// Your Firebase configuration - removed process.env reference that was causing errors
+// Firebase configuration using environment variables
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -19,6 +20,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const analytics = getAnalytics(app);
 
 // Admin authentication function
 const authenticateAdmin = async (username, password) => {
@@ -39,4 +41,4 @@ const authenticateAdmin = async (username, password) => {
 };
 
 const storage = getStorage(app);
-export { db, storage, authenticateAdmin };
+export { db, storage, analytics, authenticateAdmin };
