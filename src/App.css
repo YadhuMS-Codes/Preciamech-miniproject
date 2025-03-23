@@ -866,6 +866,12 @@ footer {
   padding: 20px 0;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
+  cursor: grab;
+  user-select: none;
+}
+
+.service-grid:active {
+  cursor: grabbing;
 }
 
 .service-grid::-webkit-scrollbar {
@@ -932,6 +938,12 @@ footer {
   -ms-overflow-style: none; /* IE and Edge */
   transition: transform 0.5s ease;
   gap: 30px;
+  cursor: grab;
+  user-select: none;
+}
+
+.project-slider:active {
+  cursor: grabbing;
 }
 
 .project-slider::-webkit-scrollbar {

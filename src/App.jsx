@@ -46,8 +46,29 @@ export default function App() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   const [projects, setProjects] = useState([]);
+
+  const handleMouseDown = (e, ref) => {
+    setIsDragging(true);
+    setStartX(e.pageX - ref.current.offsetLeft);
+    setScrollLeft(ref.current.scrollLeft);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e, ref) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - ref.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    ref.current.scrollLeft = scrollLeft - walk;
+  };
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -559,15 +580,15 @@ export default function App() {
         <section id="services" className="services">
           <h2 data-aos="fade-up">Our Services</h2>
           <div className="service-scroll-controls">
-            <button 
-              className="service-scroll-btn prev-btn" 
-              onClick={() => navigateServices('prev')}
-              aria-label="Previous services"
-            >
-              ←
-            </button>
             <div className="service-grid-container">
-              <div className="service-grid" ref={servicesRef}>
+              <div 
+                className="service-grid draggable" 
+                ref={servicesRef}
+                onMouseDown={(e) => handleMouseDown(e, servicesRef)}
+                onMouseUp={handleMouseUp}
+                onMouseMove={(e) => handleMouseMove(e, servicesRef)}
+                onMouseLeave={handleMouseUp}
+              >
                 {services.map((service, index) => (
                   <div
                     key={service.id}
@@ -622,7 +643,14 @@ export default function App() {
           <div className="project-carousel">
             
             <div className="project-viewport">
-              <div className="project-slider" ref={projectsRef}>
+              <div 
+                className="project-slider" 
+                ref={projectsRef}
+                onMouseDown={(e) => handleMouseDown(e, projectsRef)}
+                onMouseUp={handleMouseUp}
+                onMouseMove={(e) => handleMouseMove(e, projectsRef)}
+                onMouseLeave={handleMouseUp}
+              >
                 {projects.map((project, index) => (
                   <div 
                     key={project.id} 
