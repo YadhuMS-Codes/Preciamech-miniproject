@@ -1107,10 +1107,6 @@ footer {
   }
 }
 
-/* Make sure to import AOS styles in your JS file */
-@import 'aos/dist/aos.css';
-
-
 
 .view-more-faq {
   display: block;
