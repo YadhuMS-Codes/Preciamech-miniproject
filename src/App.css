@@ -919,3 +919,49 @@ footer {
   transform: translateY(-2px);
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
+
+.footer-links {
+  display: flex;
+  gap: 4rem;
+  margin-top: 2rem;
+}
+
+.footer-column {
+  flex: 1;
+}
+
+.footer-column h4 {
+  margin-bottom: 1.5rem;
+  color: #ffc176;
+  font-size: 1.2rem;
+}
+
+.footer-column a {
+  display: block;
+  color: #ffffff;
+  text-decoration: none;
+  margin-bottom: 1rem;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+  padding: 0.3rem 0;
+}
+
+.footer-column a:hover {
+  opacity: 1;
+  color: #ffc176;
+}
+
+.footer-content {
+  padding: 3rem 5%;
+}
+
+.copyright {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem 0;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.copyright p {
+  color: rgba(255, 255, 255, 0.6);
+}
