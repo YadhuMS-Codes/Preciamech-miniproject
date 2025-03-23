@@ -673,20 +673,21 @@ export default function App() {
                 ))}
               </div>
             </div>
+            <div className="section-indicators">
+              {projects.map((_, index) => (
+                <div
+                  key={index}
+                  className={`section-indicator ${index === currentProjectIndex ? 'active' : ''}`}
+                  onClick={() => {
+                    setCurrentProjectIndex(index);
+                    const card = projectsRef.current.children[index];
+                    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                  }}
+                />
+              ))}
+            </div>
           </div>
-          <div className="section-indicators">
-            {projects.map((_, index) => (
-              <div
-                key={index}
-                className={`section-indicator ${index === currentProjectIndex ? 'active' : ''}`}
-                onClick={() => {
-                  setCurrentProjectIndex(index);
-                  const card = projectsRef.current.children[index];
-                  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }}
-              />
-            ))}
-          </div>
+          
 
           {selectedProject && (
             <div className="modal-overlay active" onClick={() => setSelectedProject(null)}>
@@ -717,12 +718,12 @@ export default function App() {
             <img src="https://imgur.com/Z5dKiLD.jpg"/>
             <img src="https://imgur.com/v0BpEp4.jpg"/>
             <img src="https://imgur.com/W9qe5Op.jpg"/>
-            
+
             <img src="https://imgur.com/sai9zKQ.jpg"/>
             <img src="https://imgur.com/hjTSQpj.jpg"/>
             <img src="https://imgur.com/0FtivCY.jpg"/>
             <img src="https://imgur.com/dITvaZ6.jpg"/>
-            
+
             <img src="https://imgur.com/f8SwqiY.jpg"/>
             <img src="https://imgur.com/rncQXS9.jpg"/>
             <img src="https://imgur.com/AvbjLj6.jpg"/>
@@ -747,7 +748,7 @@ export default function App() {
             <img src="https://imgur.com/1SmZq0f.jpg"/>
             <img src="https://imgur.com/Ck2GFR2.jpg"/>
             <img src="https://imgur.com/utcrptF.jpg"/>
-            
+
           </div>
         </section>
 
