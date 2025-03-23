@@ -588,13 +588,7 @@ export default function App() {
                 ))}
               </div>
             </div>
-            <button 
-              className="service-scroll-btn next-btn" 
-              onClick={() => navigateServices('next')}
-              aria-label="Next services"
-            >
-              →
-            </button>
+            
           </div>
 
           {selectedService && (
@@ -626,14 +620,7 @@ export default function App() {
         <section id="projects" className="projects">
           <h2 data-aos="fade-up">Recent Projects</h2>
           <div className="project-carousel">
-            <button 
-              className="project-nav prev" 
-              onClick={() => navigateProjects('prev')}
-              aria-label="Previous project"
-            >
-              ←
-            </button>
-
+            
             <div className="project-viewport">
               <div className="project-slider" ref={projectsRef}>
                 {projects.map((project, index) => (
@@ -810,7 +797,7 @@ export default function App() {
             />
           </div>
         </section>
-      </>
+            </>
     );
   };
 
