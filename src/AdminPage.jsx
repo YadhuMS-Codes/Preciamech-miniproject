@@ -16,8 +16,9 @@ const AdminPage = () => {
   const [currentQuestionId, setCurrentQuestionId] = useState(null);
   const [loginError, setLoginError] = useState('');
   const [projectTitle, setProjectTitle] = useState('');
-  const [projectDescription, setProjectDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState(''); // Updated state variable
+  const [projectClient, setProjectClient] = useState('');
+  const [projectNature, setProjectNature] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const [editingQuestion, setEditingQuestion] = useState(null);
   const [editingProject, setEditingProject] = useState(null);
 
@@ -137,14 +138,16 @@ const AdminPage = () => {
 
       await addDoc(collection(db, "projects"), {
         title: projectTitle,
-        description: projectDescription,
+        client: projectClient,
+        nature: projectNature,
         image: imageUrl,
         visible: true,
         createdAt: serverTimestamp()
       });
 
       setProjectTitle('');
-      setProjectDescription('');
+      setProjectClient('');
+      setProjectNature('');
       setImageUrl('');
       fetchProjects();
       alert('Project added successfully!');
@@ -318,10 +321,18 @@ const AdminPage = () => {
                   onChange={(e) => setProjectTitle(e.target.value)}
                   required
                 />
-                <textarea
-                  placeholder="Project Description"
-                  value={projectDescription}
-                  onChange={(e) => setProjectDescription(e.target.value)}
+                <input
+                  type="text"
+                  placeholder="Client Name"
+                  value={projectClient}
+                  onChange={(e) => setProjectClient(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Project Nature"
+                  value={projectNature}
+                  onChange={(e) => setProjectNature(e.target.value)}
                   required
                 />
                 <input

@@ -682,8 +682,11 @@ export default function App() {
                   ×
                 </button>
                 <img src={selectedProject.image || '/logoprecia.png'} alt={selectedProject.title} loading="lazy" />
-                <h3>{selectedProject.title}</h3>
-                <p>{selectedProject.description}</p>
+                <h3 className="project-modal-title">{selectedProject.title}</h3>
+                <div className="project-modal-details">
+                  <p><span>Client:</span> {selectedProject.client}</p>
+                  <p><span>Nature:</span> {selectedProject.nature}</p>
+                </div>
               </div>
             </div>
           )}
