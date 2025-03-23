@@ -842,6 +842,7 @@ export default function App() {
             <a href="#services" onClick={() => setMobileMenuOpen(false)}>Services</a>
             <a href="#projects" onClick={() => setMobileMenuOpen(false)}>Projects</a>
             <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
+            <a href="#about" onClick={() => setMobileMenuOpen(false)}>About Us</a>
           </div>
         </nav>
       )}
