@@ -685,6 +685,7 @@ export default function App() {
                 <h3 className="project-modal-title">{selectedProject.title}</h3>
                 <div className="project-modal-details">
                   <p><span>Client:</span> {selectedProject.client}</p>
+                  <p><span>Type:</span> {selectedProject.type}</p>
                   <p><span>Nature:</span> {selectedProject.nature}</p>
                 </div>
               </div>

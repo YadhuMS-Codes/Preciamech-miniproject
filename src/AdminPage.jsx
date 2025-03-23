@@ -17,6 +17,7 @@ const AdminPage = () => {
   const [loginError, setLoginError] = useState('');
   const [projectTitle, setProjectTitle] = useState('');
   const [projectClient, setProjectClient] = useState('');
+  const [projectType, setProjectType] = useState('');
   const [projectNature, setProjectNature] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [editingQuestion, setEditingQuestion] = useState(null);
@@ -139,6 +140,7 @@ const AdminPage = () => {
       await addDoc(collection(db, "projects"), {
         title: projectTitle,
         client: projectClient,
+        type: projectType,
         nature: projectNature,
         image: imageUrl,
         visible: true,
@@ -147,6 +149,7 @@ const AdminPage = () => {
 
       setProjectTitle('');
       setProjectClient('');
+      setProjectType('');
       setProjectNature('');
       setImageUrl('');
       fetchProjects();
@@ -326,6 +329,13 @@ const AdminPage = () => {
                   placeholder="Client Name"
                   value={projectClient}
                   onChange={(e) => setProjectClient(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Project Type"
+                  value={projectType}
+                  onChange={(e) => setProjectType(e.target.value)}
                   required
                 />
                 <input
