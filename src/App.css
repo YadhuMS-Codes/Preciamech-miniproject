@@ -673,14 +673,18 @@ footer {
 
 @media (max-width: 768px) {
   body {
-    width: 100%;
+    width: 100vw;
     overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
   }
 
   .app {
-    width: 100%;
+    width: 100vw;
     overflow-x: hidden;
+  }
+
+  section {
+    padding: 3rem 1rem;
   }
 
   .nav-links {
@@ -693,6 +697,27 @@ footer {
     padding: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+  }
+
+  .service-card, .project-card {
+    width: calc(100vw - 2rem);
+    min-width: unset;
+    margin: 0 1rem;
+  }
+
+  .service-grid, .project-slider {
+    padding: 0;
+    margin: 0;
+  }
+
+  .pic .image-grid {
+    padding: 0;
+  }
+
+  .modal-content {
+    width: 95vw;
+    margin: 0 auto;
+    padding: 1rem;
   }
 
   .nav-links.active {
