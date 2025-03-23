@@ -646,12 +646,12 @@ export default function App() {
                   >
                     <div className="project-image">
                       <img
-                        src={project.image || '/logoprecia.png'}
+                        src={project.image || 'https://imgur.com/AsD6vaC.jpg'}
                         alt={project.title}
                         loading="lazy"
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = '/logoprecia.png';
+                          e.target.src = 'https://imgur.com/AsD6vaC.jpg';
                         }}
                       />
                       <h3>{project?.title || 'Untitled Project'}</h3>
@@ -672,7 +672,7 @@ export default function App() {
                 >
                   ×
                 </button>
-                <img src={selectedProject.image || '/logoprecia.png'} alt={selectedProject.title} loading="lazy" />
+                <img src={selectedProject.image || 'https://imgur.com/AsD6vaC.jpg'} alt={selectedProject.title} loading="lazy" />
                 <h3 className="project-modal-title">{selectedProject.title}</h3>
                 <div className="project-modal-details">
                   <p><span>Client Name:</span> {selectedProject.client}</p>
@@ -716,6 +716,17 @@ export default function App() {
             <img src="https://imgur.com/63NL8lo.jpg"/>
             <img src="https://imgur.com/wB48exF.jpg"/>
             <img src="https://imgur.com/xd58VQB.jpg"/>
+
+            <img src="https://imgur.com/GB2Sfry.jpg"/>
+            <img src="https://imgur.com/1SmZq0f.jpg"/>
+            <img src="https://imgur.com/Ck2GFR2.jpg"/>
+            <img src="https://imgur.com/utcrptF.jpg"/>
+
+            <img src="https://imgur.com/cTPa5hy.jpg"/>
+            <img src="https://imgur.com/LJkTctN.jpg"/>
+            <img src="https://imgur.com/BRgQDJZ.jpg"/>
+            <img src="https://imgur.com/dmCDWN5.jpg"/>
+            <img src="https://imgur.com/lcGW7Ay.jpg"/>
           </div>
         </section>
 
@@ -848,7 +859,7 @@ export default function App() {
         <nav>
           <div className="logo-container">
             <img
-              src="/logoprecia.png"
+              src="https://imgur.com/AsD6vaC.jpg"
               alt="PreciaMech Logo"
               className="logo-image"
               onClick={() => window.location.reload()}
@@ -877,7 +888,7 @@ export default function App() {
           <div className="footer-content">
             <div className="footer-info">
               <div className="footer-logo">
-                <img src="/logoprecia.png" alt="PreciaMech Logo" className="footer-logo-image" />
+                <img src="https://imgur.com/AsD6vaC.jpg" alt="PreciaMech Logo" className="footer-logo-image" />
                 <div>PRECIAMECH</div>
               </div>
               <p>Great Value Engineering Service Provider</p>
