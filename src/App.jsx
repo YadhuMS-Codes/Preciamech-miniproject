@@ -684,9 +684,9 @@ export default function App() {
                 <img src={selectedProject.image || '/logoprecia.png'} alt={selectedProject.title} loading="lazy" />
                 <h3 className="project-modal-title">{selectedProject.title}</h3>
                 <div className="project-modal-details">
-                  <p><span>Client:</span> {selectedProject.client}</p>
-                  <p><span>Type:</span> {selectedProject.type}</p>
-                  <p><span>Nature:</span> {selectedProject.nature}</p>
+                  <p><span>Client Name:</span> {selectedProject.client}</p>
+                  <p><span>Project Name:</span> {selectedProject.type}</p>
+                  <p><span>Nature of Work:</span> {selectedProject.nature}</p>
                 </div>
               </div>
             </div>
