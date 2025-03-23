@@ -896,29 +896,7 @@ footer {
 /* Make sure to import AOS styles in your JS file */
 @import 'aos/dist/aos.css';
 
-/* Gallery styles */
-.gallery-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
 
-.gallery-image {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.swiper-button-next, .swiper-button-prev {
-  color: #0097FB !important;
-}
-
-.swiper-pagination-bullet-active {
-  background-color: #0097FB !important;
-}
 
 .view-more-faq {
   display: block;

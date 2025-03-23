@@ -6,7 +6,6 @@ import { db } from './firebaseConfig';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './App.css';
-//import ImageSlider from './ImageSlider'; // Removed import -  This import was likely causing the error.  The Gallery section needs to be handled differently.
 
 export default function App() {
    const navigate = useNavigate();
