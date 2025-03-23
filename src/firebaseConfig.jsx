@@ -1,4 +1,3 @@
-
 // Import Firebase modules
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
@@ -31,24 +30,6 @@ try {
 }
 
 db = getFirestore(app);
-
-const authenticateAdmin = async (username, password) => {
-  try {
-    console.log("Authenticating admin with username:", username);
-    const adminQuery = query(
-      collection(db, "admins"), 
-      where("username", "==", username),
-      where("password", "==", password)
-    );
-    
-    const snapshot = await getDocs(adminQuery);
-    return !snapshot.empty;
-  } catch (error) {
-    console.error("Authentication error:", error);
-    return false;
-  }
-};
-
 const storage = getStorage(app);
 
 const authenticateAdmin = async (username, password) => {
@@ -59,7 +40,7 @@ const authenticateAdmin = async (username, password) => {
       where("username", "==", username),
       where("password", "==", password)
     );
-    
+
     const snapshot = await getDocs(adminQuery);
     return !snapshot.empty;
   } catch (error) {
