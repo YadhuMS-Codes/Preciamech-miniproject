@@ -64,22 +64,17 @@ const AdminPage = () => {
     e.preventDefault();
     setLoginError('');
     try {
-      const adminsRef = collection(db, "admins");
-      const q = query(adminsRef, 
-        where("username", "==", adminUsername),
-        where("password", "==", adminPassword)
+      const querySnapshot = await getDocs(query(collection(db, "admins")));
+      const admin = querySnapshot.docs.find(doc => 
+        doc.data().username === adminUsername && doc.data().password === adminPassword
       );
-      
-      const querySnapshot = await getDocs(q);
-      
-      if (!querySnapshot.empty) {
+
+      if (admin) {
         setIsAdmin(true);
-        setLoginError('');
       } else {
         setLoginError('Invalid username or password');
       }
     } catch (error) {
-      console.error("Login error:", error);
       setLoginError('Authentication failed. Please try again.');
     }
   };
