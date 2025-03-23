@@ -656,7 +656,7 @@ export default function App() {
             <div className="modal-overlay active" onClick={() => setSelectedProject(null)}>
               <div className="modal-content project-modal" onClick={(e) => e.stopPropagation()}>
                 <button
-                  className="modal-close"
+                  className="project-modal-close"
                   onClick={() => setSelectedProject(null)}
                   aria-label="Close modal"
                 >
