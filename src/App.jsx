@@ -370,7 +370,7 @@ export default function App() {
   // Functions to scroll projects
   const navigateProjects = (direction) => {
     if (!projectsRef.current) return;
-    
+
     const cards = projectsRef.current.querySelectorAll('.project-card');
     const cardWidth = cards[0].offsetWidth + 20; // Including margin
     const containerWidth = projectsRef.current.clientWidth;
@@ -384,7 +384,7 @@ export default function App() {
           const clone = card.cloneNode(true);
           projectsRef.current.appendChild(clone);
         });
-        
+
         setTimeout(() => {
           projectsRef.current.style.transition = 'none';
           projectsRef.current.scrollLeft = 0;
@@ -407,7 +407,7 @@ export default function App() {
           projectsRef.current.insertBefore(clone, projectsRef.current.firstChild);
         });
         projectsRef.current.scrollLeft = projectsRef.current.scrollWidth;
-        
+
         setTimeout(() => {
           projectsRef.current.style.transition = 'none';
           // Remove cloned cards
@@ -424,7 +424,7 @@ export default function App() {
   // Functions to scroll services
   const navigateServices = (direction) => {
     if (!servicesRef.current) return;
-    
+
     const cards = servicesRef.current.querySelectorAll('.service-card');
     const cardWidth = cards[0].offsetWidth + 20;
     const containerWidth = servicesRef.current.clientWidth;
@@ -639,7 +639,7 @@ export default function App() {
               </div>
             </div>
 
-            
+
 
             <button 
               className="project-nav next" 
@@ -812,7 +812,7 @@ export default function App() {
             <a href="#home">Home</a>
             <a href="#services">Services</a>
             <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
+            <a href"#contact">Contact</a>
           </div>
         </nav>
       )}
