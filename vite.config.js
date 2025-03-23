@@ -7,6 +7,11 @@ export default defineConfig({
   server: {
     host: true,
     port: 3000,
+    historyApiFallback: true
+  },
+  server: {
+    host: true,
+    port: 3000,
     allowedHosts: ['*', '.replit.dev'],
     historyApiFallback: true,
   },
