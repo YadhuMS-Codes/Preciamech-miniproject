@@ -596,6 +596,19 @@ export default function App() {
               →
             </button>
           </div>
+          <div className="section-indicators">
+            {services.map((_, index) => (
+              <div
+                key={index}
+                className={`section-indicator ${index === currentIndex ? 'active' : ''}`}
+                onClick={() => {
+                  setCurrentIndex(index);
+                  const card = servicesRef.current.children[index];
+                  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }}
+              />
+            ))}
+          </div>
 
           {selectedService && (
             <div
@@ -661,6 +674,19 @@ export default function App() {
               </div>
             </div>
           </div>
+          <div className="section-indicators">
+            {projects.map((_, index) => (
+              <div
+                key={index}
+                className={`section-indicator ${index === currentProjectIndex ? 'active' : ''}`}
+                onClick={() => {
+                  setCurrentProjectIndex(index);
+                  const card = projectsRef.current.children[index];
+                  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }}
+              />
+            ))}
+          </div>
 
           {selectedProject && (
             <div className="modal-overlay active" onClick={() => setSelectedProject(null)}>
@@ -710,7 +736,7 @@ export default function App() {
             <img src="https://imgur.com/BkWC70U.jpg"/>
             <img src="https://imgur.com/YJONuq4.jpg"/>
             <img src="https://imgur.com/1c0Kniu.jpg"/>
-            <img src="https://imgur.com/DSgOm5S.jpg"/>
+            <img src="https://imgur.com/KZicbtZ.jpg"/>
           </div>
         </section>
 
