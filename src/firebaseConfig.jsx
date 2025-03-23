@@ -50,4 +50,22 @@ const authenticateAdmin = async (username, password) => {
 };
 
 const storage = getStorage(app);
+
+const authenticateAdmin = async (username, password) => {
+  try {
+    console.log("Authenticating admin with username:", username);
+    const adminQuery = query(
+      collection(db, "admins"), 
+      where("username", "==", username),
+      where("password", "==", password)
+    );
+    
+    const snapshot = await getDocs(adminQuery);
+    return !snapshot.empty;
+  } catch (error) {
+    console.error("Authentication error:", error);
+    return false;
+  }
+};
+
 export { db, storage, authenticateAdmin };

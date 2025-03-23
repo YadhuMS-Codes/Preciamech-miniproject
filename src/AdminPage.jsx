@@ -64,14 +64,8 @@ const AdminPage = () => {
     e.preventDefault();
     setLoginError('');
     try {
-      const adminsRef = collection(db, "admins");
-      const q = query(adminsRef, 
-        where("username", "==", adminUsername),
-        where("password", "==", adminPassword)
-      );
-      const querySnapshot = await getDocs(q);
-
-      if (!querySnapshot.empty) {
+      const isAuthenticated = await authenticateAdmin(adminUsername, adminPassword);
+      if (isAuthenticated) {
         setIsAdmin(true);
         fetchPendingQuestions();
         fetchProjects();
