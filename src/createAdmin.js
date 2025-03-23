@@ -1,16 +1,17 @@
+
 // Script to add admin user to Firestore
 import { initializeApp } from "firebase/app";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 
-// Your Firebase configuration
+// Firebase configuration using environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyBu3u6yh4jX0y_MEdCXAjIGHwVqfDQUDl8",
-  authDomain: "preciamech-63537.firebaseapp.com",
-  projectId: "preciamech-63537",
-  storageBucket: "preciamech-63537.appspot.com",
-  messagingSenderId: "373438186510",
-  appId: "1:373438186510:web:d20daf88ab0fd04be0685f",
-  measurementId: "G-5ZRRRH6C38",
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase

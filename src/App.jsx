@@ -494,10 +494,10 @@ export default function App() {
 
     try {
       const result = await emailjs.send(
-        "service_yrwqlun", // Replace with your EmailJS service ID
-        "template_v0t030p", // Replace with your EmailJS template ID
+        process.env.EMAILJS_SERVICE_ID,
+        process.env.EMAILJS_TEMPLATE_ID,
         formData,
-        "a3-PM_cyuqyXkuJQr", // Replace with your EmailJS public key
+        process.env.EMAILJS_PUBLIC_KEY
       );
 
       setSubmitSuccess(true);
