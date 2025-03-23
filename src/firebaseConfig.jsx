@@ -1,53 +1,37 @@
 
-// Import Firebase modules
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
-// Firebase configuration using environment variables
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
+  apiKey: "AIzaSyC88iqGZd4wPsyR4lKVQGKHRPwQSNR2N4A",
+  authDomain: "preciamech-9c59b.firebaseapp.com",
+  projectId: "preciamech-9c59b",
+  storageBucket: "preciamech-9c59b.appspot.com",
+  messagingSenderId: "785913419435",
+  appId: "1:785913419435:web:5eee3be2e7c2e0ecbcfcc2",
+  measurementId: "G-GSNW42QQVS"
 };
 
 // Initialize Firebase
-let app;
-let db;
-
-try {
-  app = initializeApp(firebaseConfig);
-} catch (error) {
-  if (error.code === 'app/duplicate-app') {
-    console.log('Firebase app already initialized');
-  } else {
-    console.error('Firebase initialization error:', error);
-  }
-}
-
-db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
 const authenticateAdmin = async (username, password) => {
   try {
     console.log("Authenticating admin with username:", username);
     const adminQuery = query(
-      collection(db, "admins"), 
+      collection(db, "admins"),
       where("username", "==", username),
       where("password", "==", password)
     );
-    
-    const snapshot = await getDocs(adminQuery);
-    return !snapshot.empty;
+    const querySnapshot = await getDocs(adminQuery);
+    return !querySnapshot.empty;
   } catch (error) {
-    console.error("Authentication error:", error);
+    console.error("Error authenticating admin:", error);
     return false;
   }
 };
 
-const storage = getStorage(app);
 export { db, storage, authenticateAdmin };

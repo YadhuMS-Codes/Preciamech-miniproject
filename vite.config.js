@@ -1,3 +1,4 @@
+
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -7,6 +8,8 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     allowedHosts:['.replit.dev','.repl.co'],
-    base:'/Preciamech-miniproject',
+  },
+  define: {
+    'process.env': process.env
   }
 })
