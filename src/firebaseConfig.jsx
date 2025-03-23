@@ -17,22 +17,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-let app;
-let db;
-
-// Avoid duplicate Firebase app initialization
-try {
-  app = initializeApp(firebaseConfig);
-} catch (error) {
-  // If already initialized, use the existing app
-  if (error.code === 'app/duplicate-app') {
-    console.log('Firebase app already initialized, using existing app');
-  } else {
-    console.error('Firebase initialization error:', error);
-  }
-}
-
-db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 // Admin authentication function
 const authenticateAdmin = async (username, password) => {
