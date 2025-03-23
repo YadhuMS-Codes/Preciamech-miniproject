@@ -673,19 +673,26 @@ footer {
 
 @media (max-width: 768px) {
   body {
-    min-width: 320px;
+    width: 100%;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .app {
+    width: 100%;
     overflow-x: hidden;
   }
 
   .nav-links {
     display: none;
     width: 100%;
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 70px;
     left: 0;
     background: rgba(255, 163, 72, 0.95);
     padding: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
   }
 
   .nav-links.active {
@@ -725,13 +732,24 @@ footer {
   }
 
   .service-card {
-    min-width: 250px;
+    min-width: calc(100vw - 40px);
     margin-right: 15px;
+    height: auto;
   }
 
   .project-card {
-    min-width: 250px;
+    min-width: calc(100vw - 40px);
     margin-right: 15px;
+    height: auto;
+  }
+
+  .service-grid, .project-slider {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .service-card, .project-card {
+    scroll-snap-align: center;
   }
 
   .service-scroll-btn, .project-nav {
