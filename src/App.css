@@ -451,8 +451,9 @@ section {
 
 
 .project-card {
-  min-width: 500px;
-  margin-right: 60px;
+  min-width: 300px;
+  max-width: 500px;
+  margin-right: 30px;
   flex: 0 0 auto;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -466,6 +467,7 @@ section {
   position: relative;
   display: flex;
   flex-direction: column;
+  width: calc(100vw - 60px);
 }
 
 .project-card .project-image {

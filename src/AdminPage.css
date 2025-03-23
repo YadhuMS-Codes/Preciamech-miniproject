@@ -44,11 +44,64 @@
 }
 
 .admin-page {
-  padding: 2rem;
+  padding: 1rem;
   max-width: 1200px;
   margin: 0 auto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
 
+.admin-dashboard {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.admin-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.question-card, .project-card {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.project-card img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .admin-page {
+    padding: 0.5rem;
+  }
+  
+  .admin-sections {
+    padding: 0.5rem;
+  }
+  
+  .question-card, .project-card {
+    padding: 0.5rem;
+  }
+  
+  input, textarea {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 .admin-login {
