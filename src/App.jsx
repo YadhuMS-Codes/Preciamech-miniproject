@@ -12,6 +12,7 @@ export default function App() {
    const navigate = useNavigate();
   const [flippedCard, setFlippedCard] = useState(null);
   const [selectedService, setSelectedService] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState('home'); // Added for SPA navigation
@@ -621,6 +622,7 @@ export default function App() {
                     className={`project-card ${index === currentProjectIndex ? 'active' : ''}`}
                     data-aos="fade-up" 
                     data-aos-delay={(index % 3) * 100}
+                    onClick={() => setSelectedProject(project)}
                   >
                     <div className="project-image">
                       <img
@@ -650,7 +652,22 @@ export default function App() {
             </button>
           </div>
 
-
+          {selectedProject && (
+            <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
+              <div className="modal-content project-modal" onClick={(e) => e.stopPropagation()}>
+                <button
+                  className="modal-close"
+                  onClick={() => setSelectedProject(null)}
+                  aria-label="Close modal"
+                >
+                  ×
+                </button>
+                <img src={selectedProject.image || '/logoprecia.png'} alt={selectedProject.title} loading="lazy" />
+                <h3>{selectedProject.title}</h3>
+                <p>{selectedProject.description}</p>
+              </div>
+            </div>
+          )}
         </section>
 
         <section id="pic" className="pic">
@@ -812,7 +829,7 @@ export default function App() {
             <a href="#home">Home</a>
             <a href="#services">Services</a>
             <a href="#projects">Projects</a>
-            <a href"#contact">Contact</a>
+            <a href="#contact">Contact</a>
           </div>
         </nav>
       )}
