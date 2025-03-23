@@ -579,7 +579,7 @@ export default function App() {
 
           {selectedService && (
             <div
-              className="modal-overlay"
+              className="modal-overlay active"
               onClick={() => setSelectedService(null)}
             >
               <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -653,7 +653,7 @@ export default function App() {
           </div>
 
           {selectedProject && (
-            <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
+            <div className="modal-overlay active" onClick={() => setSelectedProject(null)}>
               <div className="modal-content project-modal" onClick={(e) => e.stopPropagation()}>
                 <button
                   className="modal-close"
