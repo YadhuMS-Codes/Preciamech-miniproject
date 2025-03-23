@@ -660,6 +660,13 @@ export default function App() {
                 ))}
               </div>
             </div>
+            <button 
+              className="project-nav next" 
+              onClick={() => navigateProjects('next')}
+              aria-label="Next project"
+            >
+              →
+            </button>
           </div>
 
           {selectedProject && (
@@ -691,12 +698,12 @@ export default function App() {
             <img src="https://imgur.com/Z5dKiLD.jpg"/>
             <img src="https://imgur.com/v0BpEp4.jpg"/>
             <img src="https://imgur.com/W9qe5Op.jpg"/>
-            
+
             <img src="https://imgur.com/sai9zKQ.jpg"/>
             <img src="https://imgur.com/hjTSQpj.jpg"/>
             <img src="https://imgur.com/0FtivCY.jpg"/>
             <img src="https://imgur.com/dITvaZ6.jpg"/>
-            
+
             <img src="https://imgur.com/f8SwqiY.jpg"/>
             <img src="https://imgur.com/rncQXS9.jpg"/>
             <img src="https://imgur.com/AvbjLj6.jpg"/>
@@ -769,7 +776,7 @@ export default function App() {
           <div className="faq-grid" data-aos="fade-up" data-aos-delay="100">
             {faqs.slice(0, 4).map((faq, index) => (
               <div className="faq-item" key={index}>
-                <h3>{faq.question}</h3>
+                <h3>{faq.question}h3>
                 <p>{faq.answer}</p>
               </div>
             ))}

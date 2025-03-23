@@ -683,6 +683,7 @@ footer {
   .app {
     width: 100vw;
     overflow-x: hidden;
+  }
   section {
     padding: 2rem 1rem;
   }
@@ -1122,7 +1123,7 @@ footer {
 .project-modal-details span {
   font-weight: 600;
   color: #333;
-  margin-right: 8px;
+  marginright: 8px;
 }
 
 .project-modal p {
