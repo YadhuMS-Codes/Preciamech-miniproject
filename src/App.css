@@ -844,12 +844,22 @@ footer {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: none;
+  background: rgba(255, 255, 255, 0.9);
   border: none;
   color: #2c3e50;
   font-size: 24px;
   cursor: pointer;
-  padding: 5px;
+  padding: 8px 12px;
+  border-radius: 50%;
+  line-height: 1;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.project-modal-close:hover {
+  background: white;
+  transform: scale(1.1);
 }
 
 .project-card.active {
