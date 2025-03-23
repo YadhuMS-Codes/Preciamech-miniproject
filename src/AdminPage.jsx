@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db, storage } from './firebaseConfig';
-import { collection, addDoc, getDocs, query, orderBy, doc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, where, orderBy, doc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import './AdminPage.css';
 
@@ -64,17 +64,22 @@ const AdminPage = () => {
     e.preventDefault();
     setLoginError('');
     try {
-      const querySnapshot = await getDocs(query(collection(db, "admins")));
-      const admin = querySnapshot.docs.find(doc => 
-        doc.data().username === adminUsername && doc.data().password === adminPassword
+      const adminsRef = collection(db, "admins");
+      const q = query(adminsRef, 
+        where("username", "==", adminUsername),
+        where("password", "==", adminPassword)
       );
+      const querySnapshot = await getDocs(q);
 
-      if (admin) {
+      if (!querySnapshot.empty) {
         setIsAdmin(true);
+        fetchPendingQuestions();
+        fetchProjects();
       } else {
         setLoginError('Invalid username or password');
       }
     } catch (error) {
+      console.error("Login error:", error);
       setLoginError('Authentication failed. Please try again.');
     }
   };
