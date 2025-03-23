@@ -660,16 +660,6 @@ export default function App() {
                 ))}
               </div>
             </div>
-
-
-
-            <button 
-              className="project-nav next" 
-              onClick={() => navigateProjects('next')}
-              aria-label="Next project"
-            >
-              →
-            </button>
           </div>
 
           {selectedProject && (
