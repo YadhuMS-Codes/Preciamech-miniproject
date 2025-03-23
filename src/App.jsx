@@ -19,7 +19,22 @@ export default function App() {
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
-  }; // Added for SPA navigation
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const [showMoreFAQs, setShowMoreFAQs] = useState(false); // For View More FAQs functionality
   const projectsRef = useRef(null);
   const servicesRef = useRef(null);
