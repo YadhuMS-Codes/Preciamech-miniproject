@@ -668,6 +668,76 @@ footer {
   .hero h1 {
     font-size: 2.5rem;
   }
+
+  .hero1 {
+    font-size: 2.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero1 span:hover {
+    font-size: 2.8rem;
+  }
+
+  .logo {
+    font-size: 1.4rem;
+  }
+
+  .logo-subtitle {
+    font-size: 0.6rem;
+  }
+
+  .service-card {
+    min-width: 250px;
+    margin-right: 15px;
+  }
+
+  .project-card {
+    min-width: 250px;
+    margin-right: 15px;
+  }
+
+  .service-scroll-btn, .project-nav {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .contact-container {
+    padding: 0 1rem;
+  }
+
+  .modal-content {
+    max-width: 95%;
+    padding: 15px;
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .hero1 {
+    font-size: 2rem;
+  }
+
+  .hero1 span:hover {
+    font-size: 2.3rem;
+  }
+
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .about-stats {
+    grid-template-columns: 1fr;
+  }
 }
 
 .service-scroll-controls {
