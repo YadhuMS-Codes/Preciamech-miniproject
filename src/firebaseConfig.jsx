@@ -5,28 +5,26 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
-// Your Firebase configuration - removed process.env reference that was causing errors
+// Firebase configuration using environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyBu3u6yh4jX0y_MEdCXAjIGHwVqfDQUDl8",
-  authDomain: "preciamech-63537.firebaseapp.com",
-  projectId: "preciamech-63537",
-  storageBucket: "preciamech-63537.appspot.com",
-  messagingSenderId: "373438186510",
-  appId: "1:373438186510:web:d20daf88ab0fd04be0685f",
-  measurementId: "G-5ZRRRH6C38"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
 let app;
 let db;
 
-// Avoid duplicate Firebase app initialization
 try {
   app = initializeApp(firebaseConfig);
 } catch (error) {
-  // If already initialized, use the existing app
   if (error.code === 'app/duplicate-app') {
-    console.log('Firebase app already initialized, using existing app');
+    console.log('Firebase app already initialized');
   } else {
     console.error('Firebase initialization error:', error);
   }
@@ -34,7 +32,6 @@ try {
 
 db = getFirestore(app);
 
-// Admin authentication function
 const authenticateAdmin = async (username, password) => {
   try {
     console.log("Authenticating admin with username:", username);
