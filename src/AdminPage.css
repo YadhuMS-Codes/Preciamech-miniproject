@@ -41,6 +41,50 @@
   gap: 2rem;
 }
 
+@media (max-width: 768px) {
+  .admin-page {
+    padding: 1rem;
+  }
+
+  .admin-login {
+    max-width: 100%;
+    margin: 1rem auto;
+    padding: 1rem;
+  }
+
+  .admin-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .project-card img {
+    max-width: 100%;
+  }
+
+  .admin-page button {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .image-preview img {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-dashboard {
+    padding: 1rem;
+  }
+
+  input, textarea {
+    font-size: 16px;
+  }
+
+  .project-card {
+    padding: 10px;
+  }
+}
+
 .question-card {
   background: #f8f9fa;
   padding: 1rem;
