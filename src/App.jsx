@@ -692,14 +692,7 @@ export default function App() {
         <section id="pic" className="pic">
           <h3 data-aos="fade-up">Some of the key client's project handled by our team in Engineering, FMCG, Food &Agricultural Segment</h3>
           <div className="image-grid">
-            {[...Array(33)].map((_, index) => (
-              <img 
-                key={index} 
-                src={`companies/${index + 1}.png`} 
-                alt={`Client ${index + 1}`} 
-                loading="lazy"
-              />
-            ))}
+            <img src="https://drive.google.com/file/d/1CKg1fKBSf1L6GrN-3zgOJP5_kWqpF1ML/view?usp=drive_link"/>
           </div>
         </section>
 
