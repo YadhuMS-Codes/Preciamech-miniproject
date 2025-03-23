@@ -14,7 +14,12 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-  const [currentPage, setCurrentPage] = useState('home'); // Added for SPA navigation
+  const [currentPage, setCurrentPage] = useState('home');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  }; // Added for SPA navigation
   const [showMoreFAQs, setShowMoreFAQs] = useState(false); // For View More FAQs functionality
   const projectsRef = useRef(null);
   const servicesRef = useRef(null);
@@ -814,13 +819,14 @@ export default function App() {
               <span className="logo-subtitle">ENGINEERING CONSULTANTS</span>
             </div>
           </div>
-          <div className="nav-links">
+          <button className="mobile-menu-btn" onClick={toggleMobileMenu}>☰</button>
+          <div className={`nav-links ${mobileMenuOpen ? 'active' : ''}`}>
             <a href="/admin" onClick={() => navigate('/admin')}>
               Admin Login</a>
-            <a href="#home">Home</a>
-            <a href="#services">Services</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
+            <a href="#home" onClick={() => setMobileMenuOpen(false)}>Home</a>
+            <a href="#services" onClick={() => setMobileMenuOpen(false)}>Services</a>
+            <a href="#projects" onClick={() => setMobileMenuOpen(false)}>Projects</a>
+            <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
           </div>
         </nav>
       )}
