@@ -687,7 +687,20 @@ export default function App() {
         <section id="pic" className="pic">
           <h3 data-aos="fade-up">Some of the key client's project handled by our team in Engineering, FMCG, Food &Agricultural Segment</h3>
           <div className="image-grid">
-            <img src="https://imgur.com/WCAMJ65"/>
+            <img src="https://imgur.com/WCAMJ65.jpg"/>
+            <img src="https://imgur.com/Z5dKiLD.jpg"/>
+            <img src="https://imgur.com/v0BpEp4.jpg"/>
+            <img src="https://imgur.com/W9qe5Op.jpg"/>
+            
+            <img src="https://imgur.com/WCAMJ65.jpg"/>
+            <img src="https://imgur.com/Z5dKiLD.jpg"/>
+            <img src="https://imgur.com/v0BpEp4.jpg"/>
+            <img src="https://imgur.com/W9qe5Op.jpg"/>
+            
+            <img src="https://imgur.com/WCAMJ65.jpg"/>
+            <img src="https://imgur.com/Z5dKiLD.jpg"/>
+            <img src="https://imgur.com/v0BpEp4.jpg"/>
+            <img src="https://imgur.com/W9qe5Op.jpg"/>
           </div>
         </section>
 
