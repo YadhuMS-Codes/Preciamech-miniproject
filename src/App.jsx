@@ -776,7 +776,7 @@ export default function App() {
           <div className="faq-grid" data-aos="fade-up" data-aos-delay="100">
             {faqs.slice(0, 4).map((faq, index) => (
               <div className="faq-item" key={index}>
-                <h3>{faq.question}h3>
+                <h3>{faq.question}</h3>
                 <p>{faq.answer}</p>
               </div>
             ))}
